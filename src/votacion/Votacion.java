@@ -1,4 +1,7 @@
+package votacion;
 
+
+import Personas.Estudiante;
 import java.util.ArrayList;
 
 

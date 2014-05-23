@@ -1,4 +1,7 @@
+package Personas;
 
+
+import Universidad.Carrera;
 import java.util.ArrayList;
 
 

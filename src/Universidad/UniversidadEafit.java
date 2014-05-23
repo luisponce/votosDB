@@ -1,4 +1,7 @@
+package Universidad;
 
+
+import votacion.Votacion;
 import java.util.ArrayList;
 
 

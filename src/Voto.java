@@ -13,7 +13,7 @@
 
 
 public class Voto {
-	private Object PuestoVotacion;
+	private String PuestoVotacion;
 	private Estudiante Votante;
-	private Candidato Seleccion;
+	private Estudiante Seleccion;
 }

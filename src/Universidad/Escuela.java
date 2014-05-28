@@ -6,23 +6,27 @@ import java.util.ArrayList;
 
 
 public class Escuela {
-	private ArrayList<Carrera> Carreras;
-	private int NumEst;
-	private String Nombre;
+	private ArrayList<Carrera> carreras;
+	private int numEst;
+	private String nombre;
 
     public Escuela(String Nombre) {
-        this.Nombre = Nombre;
+        this.nombre = Nombre;
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
-    public void setNombre(String Nombre) {
-        this.Nombre = Nombre;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public ArrayList<Carrera> getCarreras() {
-        return Carreras;
+        return carreras;
+    }
+    
+    public void ingresarCarrera(Carrera c){
+        carreras.add(c);
     }
 }

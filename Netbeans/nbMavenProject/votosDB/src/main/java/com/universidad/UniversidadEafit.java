@@ -1,7 +1,7 @@
-package Universidad;
+package com.universidad;
 
 
-import votacion.Votacion;
+import com.votacion.Votacion;
 import java.util.ArrayList;
 
 
@@ -23,9 +23,5 @@ public class UniversidadEafit {
             INSTANCE = new UniversidadEafit();
         }
         return INSTANCE;
-    }
-    
-    public void ingresarEscuela(Escuela e){
-        escuelas.add(e);
     }
 }

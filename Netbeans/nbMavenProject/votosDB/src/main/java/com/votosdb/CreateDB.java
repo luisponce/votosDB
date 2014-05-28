@@ -27,7 +27,50 @@ public class CreateDB {
             
             Statement stm = c.createStatement();
             
+            String sql = "CREATE TABLE CARRERA ("
+                    + "ID       INT         PRIMARY KEY NOT NULL"
+                    + "NOMBRE   TEXT                    NOT NULL"
+                    + "ESCUELA  INT                     NOT NULL"
+                    + "); ";
             
+            sql += "CREATE TABLE ESCUELA ("
+                    + "ID       INT         PRIMARY KEY NOT NULL"
+                    + "NOMBRE   TEXT                    NOT NULL"
+                    + "); ";
+            
+            sql += "CREATE TABLE VOTO ("
+                    + "VOTANTE      INT     PRIMARY KEY NOT NULL"
+                    + "VOTACION     INT     PRIMARY KEY NOT NULL"
+                    + "SELECCION    INT"//null para voto en blanco
+                    + "PUESTO_VOT   INT                 NOT NULL"
+                    + "); ";
+            
+            sql += "CREATE TABLE PUESTO("
+                    + "ID       INT         PRIMARY KEY NOT NULL"
+                    + "NOMBRE   TEXT                    NOT NULL"
+                    + "); ";
+            
+            sql += "CREATE TABLE VOTACION("
+                    + "ID           INT     PRIMARY KEY NOT NULL"
+                    + "NOMBRE       TEXT"
+                    + "FECHA_INICIO " //TODO: definir un estandar para almacenar la fecha
+                    + "FECHA_FIN    "
+                    + "); ";
+            
+            sql += "CREATE TABLE ESTUDIANTE-CARRERA("
+                    + "ESTUDIANTE   INT     PRIMARY KEY NOT NULL"
+                    + "CARRERA      INT     PRIMARY KEY NOT NULL"
+                    + "); ";
+            
+            sql += "CREATE TABLE ESTUDIANTE("
+                    + "ID       INT         PRIMARY KEY NOT NULL"
+                    + "CODIGO   CHAR(15)                NOT NULL"
+                    + "); ";
+            
+            sql += "CREATE TABLE ADMIN("
+                    + "ID   INT             PRIMARY KEY NOT NULL"
+                    + "TIPO BOOL                        NOT NULL"
+                    + "); ";
             
             c.close();
         } catch (SQLException ex) {

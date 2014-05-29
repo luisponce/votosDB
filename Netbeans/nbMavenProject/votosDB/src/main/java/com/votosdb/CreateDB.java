@@ -72,6 +72,16 @@ public class CreateDB {
                     + "TIPO BOOL                        NOT NULL"
                     + "); ";
             
+            sql += "CREATE TABLE USUARIO("
+                    + "ID       INT         PRIMARY KEY NOT NULL"
+                    + "NOMBRE   TEXT                    NOT NULL"
+                    + "CORREO   TEXT                    NOT NULL"
+                    + "PASSWORD TEXT                    NOT NULL"
+                    + ");";
+            
+            stm.executeQuery(sql);
+            System.out.println("Tablas con esquema creadas exitosamente");
+            
             c.close();
         } catch (SQLException ex) {
             Logger.getLogger(CreateDB.class.getName()).log(Level.SEVERE, null, ex);

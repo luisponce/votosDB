@@ -18,11 +18,15 @@ public class DBOps {
     private static final String nombreDB = "votos";
     
     public static Connection ConnectDB(){
+        return ConnectDB(nombreDB);
+    }
+    
+    public static Connection ConnectDB(String DB_name){
         Connection c = null;
         try {
           Class.forName("org.sqlite.JDBC");
           c = DriverManager.getConnection("jdbc:sqlite:" 
-                  + nombreDB + ".db");
+                  + DB_name + ".db");
 
 
         } catch ( ClassNotFoundException | SQLException e ) {

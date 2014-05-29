@@ -15,4 +15,14 @@ public class Estudiante extends Persona {
 	public void Votar() {
         //TODO: implementar votar
 	}
+
+    public Estudiante(int Codigo, ArrayList<Carrera> Carreras,
+            boolean candidato, String nombre, String correo, String clave) {
+        this.Codigo = Codigo;
+        this.Carreras = Carreras;
+        this.candidato = candidato;
+        this.Nombre = nombre;
+        this.Correo = correo;
+        this.Password = clave;
+    }
 }

@@ -14,4 +14,12 @@ public class Votacion {
 	private ArrayList<Voto> Votos;
 	private Estudiante[] candidatos;
 	private String Nombre;
+
+    public Votacion(Object FechaInicio, Object FechaFin, Estudiante[] candidatos, String Nombre) {
+        this.FechaInicio = FechaInicio;
+        this.FechaFin = FechaFin;
+        this.candidatos = candidatos;
+        this.Nombre = Nombre;
+        this.Votos = new ArrayList<>();
+    }
 }

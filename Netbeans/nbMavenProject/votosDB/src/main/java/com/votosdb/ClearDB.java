@@ -23,7 +23,7 @@ public class ClearDB {
      */
     public static void main(String[] args) {
         try {
-            Connection c = DBOps.ConnectDB();
+            Connection c = DBOps.getInstance().ConnectDB();
             
             Statement stm = c.createStatement();
             

@@ -40,7 +40,7 @@ ESTUDIANTE{
 
 ADMIN{
 	ID (PK FK)
-	TIPO
+	TIPO 			//0 para votos, 1 para eafit
 }
 
 USUARIO{

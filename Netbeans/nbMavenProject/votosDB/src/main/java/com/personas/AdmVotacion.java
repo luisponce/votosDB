@@ -43,7 +43,7 @@ public class AdmVotacion extends Admin{
             }
             Votacion nuevaVotacion = new Votacion(fechaIni, fechaFin,
                     postulados, nombre);
-            DBOps ops = new DBOps();
+            DBOps ops = DBOps.getInstance();
             Connection con = ops.ConnectDB();
             Statement stmt;
             String sql = "Insert into VOTACION (NOMBRE, FECHA_INICIO, FECHA_FIN)"

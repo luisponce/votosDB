@@ -4,6 +4,9 @@ package com.personas;
 
 import com.universidad.Carrera;
 import com.votacion.Votacion;
+import com.votosdb.DBOps;
+import java.sql.Connection;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -34,13 +37,20 @@ public class AdmVotacion extends Admin{
                 throw new Exception("La fecha de inicio de votacion no"
                         + " es válida.");
             }
-            if(fechaIni.compareTo(fechaFin) < 0){
+            if(fechaIni.compareTo(fechaFin) > 0){
                 throw new Exception("La fecha de inicio de votacion no"
                         + " es válida.");
             }
             Votacion nuevaVotacion = new Votacion(fechaIni, fechaFin,
                     postulados, nombre);
-            //meterla en la DB y notificar a la universidad (singleton).
+            DBOps ops = new DBOps();
+            Connection con = ops.ConnectDB();
+            Statement stmt;
+            String sql = "Insert into VOTACION (NOMBRE, FECHA_INICIO, FECHA_FIN)"
+                    + " values ("+nuevaVotacion.getNombre()+
+                    ", "+nuevaVotacion.getFechaInicio()+
+                    ", "+nuevaVotacion.getFechaFin()+")";
+            stmt = con.prepareStatement(sql);
     }
     
     public void RegistrarCandidato(int codigo, ArrayList<Carrera> carreras,

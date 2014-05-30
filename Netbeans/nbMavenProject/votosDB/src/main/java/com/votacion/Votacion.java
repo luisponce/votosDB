@@ -15,6 +15,18 @@ public class Votacion {
 	private Estudiante[] candidatos;
 	private String Nombre;
 
+    public Object getFechaInicio() {
+        return FechaInicio;
+    }
+
+    public Object getFechaFin() {
+        return FechaFin;
+    }
+
+    public String getNombre() {
+        return Nombre;
+    }
+
     public Votacion(Object FechaInicio, Object FechaFin, Estudiante[] candidatos, String Nombre) {
         this.FechaInicio = FechaInicio;
         this.FechaFin = FechaFin;

@@ -2,6 +2,11 @@ package com.universidad;
 
 
 import com.votacion.Votacion;
+import com.votosdb.DBOps;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 
@@ -24,11 +29,30 @@ public class UniversidadEafit {
         return INSTANCE;
     }
     
-    public ArrayList<Escuela> getEscuelas(){
+    /**
+     * Obtiene las escuelas almacenadas en la BDs y las retorna en una lista de
+     * escuelas.
+     * @return La lista de las escuelas en la BDs
+     * @throws SQLException 
+     */
+    public ArrayList<Escuela> getEscuelas() throws SQLException{
         ArrayList<Escuela> listEscuelas = new ArrayList<>();
-        //TODO: query para obtener las escuelas
         
-        //TODO: meter las escuelas en la lista
+        //Obtener las escuelas de la BDs
+        Connection c = DBOps.getInstance().ConnectDB();
+        Statement stm = c.createStatement();  
+        String sql = "SELECT NOMBRE FROM ESCUELA";
+        ResultSet result = stm.executeQuery(sql);
+        
+        //meter las escuelas en la lista
+        while(result.next()){
+            String name = result.getString(1); //obtiene el nombre
+            Escuela cur = new Escuela(name);
+            listEscuelas.add(cur);
+        }
+        
+        stm.close();
+        c.close();
         
         return listEscuelas;
     }

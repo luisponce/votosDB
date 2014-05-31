@@ -32,7 +32,7 @@ public class UniversidadEafit {
     /**
      * Obtiene las escuelas almacenadas en la BDs y las retorna en una lista de
      * escuelas.
-     * @return La lista de las escuelas en la BDs
+     * @return La lista de las escuelas en la BDs en un arreglo
      * @throws SQLException 
      */
     public ArrayList<Escuela> getEscuelas() throws SQLException{

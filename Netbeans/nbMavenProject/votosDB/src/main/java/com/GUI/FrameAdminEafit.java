@@ -6,27 +6,35 @@
 
 package com.GUI;
 
+import com.personas.AdmEafit;
 import com.sun.imageio.plugins.jpeg.JPEG;
 import com.universidad.Escuela;
 import com.universidad.UniversidadEafit;
+import com.votosdb.DBOps;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 
 /**
  *
- * @author luisponcedeleon
  */
 public class FrameAdminEafit extends javax.swing.JFrame {
 
+    private AdmEafit adminLogedIn;
+    
     /**
      * Creates new form FrameAdminEafit
+     * @param admEafit El admin que esta logeado
      */
-    public FrameAdminEafit() {
+    public FrameAdminEafit(AdmEafit admEafit) {
         initComponents();
+        adminLogedIn = admEafit;
     }
 
     /**
@@ -38,77 +46,276 @@ public class FrameAdminEafit extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         listEscuelas = new javax.swing.JList();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        listCarreras = new javax.swing.JList();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        listEstudiantes = new javax.swing.JList();
+        jPanel1 = new javax.swing.JPanel();
+        Agregar = new javax.swing.JButton();
+        Eliminar = new javax.swing.JButton();
+        Modificar = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        jPanel8 = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jPanel10 = new javax.swing.JPanel();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AdminEafit");
-
-        jButton1.setText("Agregar Escuela");
-        jPanel1.add(jButton1);
+        setResizable(false);
 
         listEscuelas.setModel(arrayToListModel(getListEscuelas()));
         listEscuelas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(listEscuelas);
 
-        jTabbedPane1.addTab("Escuelas", jScrollPane2);
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 331, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel4Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel4Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
 
-        listCarreras.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Operaciones"));
+        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 10));
+
+        Agregar.setText("Agregar Escuela");
+        Agregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AgregarActionPerformed(evt);
+            }
         });
-        jScrollPane3.setViewportView(listCarreras);
+        jPanel1.add(Agregar);
 
-        jTabbedPane1.addTab("Carreras", jScrollPane3);
-
-        listEstudiantes.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
+        Eliminar.setText("Eliminar Escuela");
+        Eliminar.setToolTipText("Eliminar la escuela seleccionada");
+        Eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarActionPerformed(evt);
+            }
         });
-        jScrollPane4.setViewportView(listEstudiantes);
+        jPanel1.add(Eliminar);
 
-        jTabbedPane1.addTab("Estudiantes", jScrollPane4);
+        Modificar.setText("Modificar Registro");
+        Modificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ModificarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(Modificar);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Escuelas", jPanel3);
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 331, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 344, Short.MAX_VALUE)
+        );
+
+        jButton2.setText("Agregar Carrera");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jButton2);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Carreras", jPanel5);
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 331, Short.MAX_VALUE)
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 344, Short.MAX_VALUE)
+        );
+
+        jButton3.setText("Agregar Estudiante");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel10.add(jButton3);
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Estudiantes", jPanel8);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jTabbedPane1)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void AgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarActionPerformed
+        String nombre = JOptionPane.showInputDialog("Nombre de la escuela a ingresar:");
+        if(nombre == null) return;
+        if(nombre.equals("")){
+            JOptionPane.showMessageDialog(null, "Ingrese un nombre para "
+                    + "la escuela", "Error ingresando Escuela", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try {
+            ArrayList<Escuela> list;
+            list = UniversidadEafit.getINSTANCE().getEscuelas();
+            Escuela[] escuelas = new Escuela[list.size()];
+            list.toArray(escuelas);
+            for (Escuela e : escuelas) {
+                if(e.getNombre().equals(nombre)){//si el nombre dado ya existe
+                    //no se puede ingresar escuelas con el mismo nombre
+                    JOptionPane.showMessageDialog(null, "No se pudo ingresar "
+                            + "la Escuela: \"" +nombre+ "\", ya existe "
+                            + "una escuela con el mismo nombre.", 
+                            "Error ingresando Escuela",
+                            JOptionPane.ERROR_MESSAGE);
+                    
+                    return;
+                }
+            }
+            
+            adminLogedIn.IngresarEscuela(nombre);
+            actualizarLista();
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, e, "Error Ingresando Escuela", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        JOptionPane.showMessageDialog(null, "Se ingreso la escuela: \"" + nombre + "\" exitosamente.");
+    }//GEN-LAST:event_AgregarActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
+        if(listEscuelas.isSelectionEmpty()){
+            JOptionPane.showMessageDialog(null, "No hay escuela seleccionada. "
+                    + "Debe seleccionar una escuela para eliminarla.", 
+                    "Error Eliminando Escuela", JOptionPane.ERROR_MESSAGE);
+        } else {
+            EliminarEscuela(listEscuelas.getSelectedIndex());
+        }
+    }//GEN-LAST:event_EliminarActionPerformed
+
+    private void ModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarActionPerformed
+        if(listEscuelas.isSelectionEmpty()){
+            JOptionPane.showMessageDialog(null, "No hay escuela seleccionada. "
+                    + "Debe seleccionar una escuela para cambiarle el nombre.", 
+                    "Error Modificando Escuela", JOptionPane.ERROR_MESSAGE);
+        } else {
+            ModificarEscuela(listEscuelas.getSelectedIndex());
+        }
+    }//GEN-LAST:event_ModificarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -140,7 +347,9 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrameAdminEafit().setVisible(true);
+                AdmEafit admEafit = new AdmEafit();//for testing
+                
+                new FrameAdminEafit(admEafit).setVisible(true);
             }
         });
     }
@@ -162,15 +371,15 @@ public class FrameAdminEafit extends javax.swing.JFrame {
             
             return names;
         } catch (SQLException ex) {
-            Logger.getLogger(FrameAdminEafit.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ex, "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
         }
-        return null;
     }
     
     /**
      * convierte un arreglo de strings en un objeto ListModel
-     * @param arr
-     * @return 
+     * @param arr arreglo a convertir.
+     * @return Un modelo de lista con los contenidos del arreglo
      */
     public ListModel arrayToListModel(String[] arr){
         DefaultListModel list = new DefaultListModel();
@@ -181,16 +390,95 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         return list;
     }
     
+    /**
+     * Elimina la escuela en la posicion dada de la lista
+     * @param index indice de la lista a eliminar.
+     */
+    private void EliminarEscuela(int index) {
+        String name = listEscuelas.getModel().getElementAt(index).toString();
+        
+        //Obtener nuevo nombre
+        String newName = JOptionPane.showInputDialog("Nuevo nombre para la escuela");
+        
+        
+        //Eliminar la escuela de la BDs
+        try {
+            Connection c = DBOps.getInstance().ConnectDB();
+            Statement stm = c.createStatement();
+            
+            String sql = "DELETE from ESCUELA where NOMBRE='" +name+ "';";
+            
+            stm.executeUpdate(sql);
+            
+            actualizarLista();
+            
+            JOptionPane.showMessageDialog(null, "Se elimino la escuela \"" +name+ "\".");
+            
+            stm.close();
+            c.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex, "Error Eliminando Escuela", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    
+    private void ModificarEscuela(int index) {
+        String nombreOld = listEscuelas.getModel().getElementAt(index).toString();
+        String nombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre de la escuela");
+        if(nombre == null) return;
+        if(nombre.equals("")){
+            JOptionPane.showMessageDialog(null, "Ingrese un nombre para "
+                    + "la escuela", "Error ingresando Escuela", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        try {
+            Connection c = DBOps.getInstance().ConnectDB();
+            Statement stm = c.createStatement();
+            
+            String sql = "UPDATE ESCUELA SET NOMBRE = '" +nombre+ 
+                    "' WHERE NOMBRE = '" +nombreOld+ "'";
+            
+            stm.executeUpdate(sql);
+            
+            actualizarLista();
+            
+            JOptionPane.showMessageDialog(null, "Se cambio el nombre de la "
+                    + "escuela \"" +nombreOld+ "\" a \"" +nombre+ "\"");
+            
+            stm.close();
+            c.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex, "Error Modificando Escuela", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    /**
+     * Actualiza el contenido de la lista
+     */
+    public void actualizarLista(){
+        listEscuelas.setModel(arrayToListModel(getListEscuelas()));
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton Agregar;
+    private javax.swing.JButton Eliminar;
+    private javax.swing.JButton Modificar;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JList listCarreras;
     private javax.swing.JList listEscuelas;
-    private javax.swing.JList listEstudiantes;
     // End of variables declaration//GEN-END:variables
+
 }

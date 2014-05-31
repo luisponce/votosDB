@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 
 public class UniversidadEafit {
-	private ArrayList<Escuela> escuelas;
 	private ArrayList<String> puestosV;
 	private ArrayList<Votacion> votaciones;
     
@@ -23,5 +22,14 @@ public class UniversidadEafit {
             INSTANCE = new UniversidadEafit();
         }
         return INSTANCE;
+    }
+    
+    public ArrayList<Escuela> getEscuelas(){
+        ArrayList<Escuela> listEscuelas = new ArrayList<>();
+        //TODO: query para obtener las escuelas
+        
+        //TODO: meter las escuelas en la lista
+        
+        return listEscuelas;
     }
 }

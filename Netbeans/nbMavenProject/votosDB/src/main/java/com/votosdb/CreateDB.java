@@ -28,39 +28,39 @@ public class CreateDB {
             Statement stm = c.createStatement();
             
             String sql = "CREATE TABLE CARRERA ("
-                    + "ID INT PRIMARY KEY NOT NULL,"
+                    + "ID INTEGER PRIMARY KEY NOT NULL,"
                     + "NOMBRE TEXT NOT NULL,"
-                    + "ESCUELA INT NOT NULL"
+                    + "ESCUELA INTEGER NOT NULL"
                     + ")";
             
             stm.execute(sql);
             
             sql = "CREATE TABLE ESCUELA ("
-                    + "ID INT PRIMARY KEY NOT NULL,"
+                    + "ID INTEGER PRIMARY KEY NOT NULL,"
                     + "NOMBRE TEXT NOT NULL"
                     + ")";
             
             stm.execute(sql);
             
             sql = "CREATE TABLE VOTO ("
-                    + "VOTANTE INT NOT NULL,"
-                    + "VOTACION INT NOT NULL,"
-                    + "SELECCION INT,"//null para voto en blanco
-                    + "PUESTO_VOT INT NOT NULL,"
+                    + "VOTANTE INTEGER NOT NULL,"
+                    + "VOTACION INTEGER NOT NULL,"
+                    + "SELECCION INTEGER,"//null para voto en blanco
+                    + "PUESTO_VOT INTEGER NOT NULL,"
                     + "PRIMARY KEY (VOTANTE, VOTACION)"
                     + ")";
             
             stm.execute(sql);
             
             sql = "CREATE TABLE PUESTO("
-                    + "ID INT PRIMARY KEY NOT NULL,"
+                    + "ID INTEGER PRIMARY KEY NOT NULL,"
                     + "NOMBRE TEXT NOT NULL"
                     + ")";
             
             stm.execute(sql);
             
             sql = "CREATE TABLE VOTACION("
-                    + "ID INT PRIMARY KEY NOT NULL,"
+                    + "ID INTEGER PRIMARY KEY NOT NULL,"
                     + "NOMBRE TEXT,"
                     + "FECHA_INICIO TEXT," //TODO: definir un estandar para almacenar la fecha
                     + "FECHA_FIN TEXT"
@@ -69,29 +69,29 @@ public class CreateDB {
             stm.execute(sql);
             
             sql = "CREATE TABLE ESTUDIANTECARRERA("
-                    + "ESTUDIANTE INT NOT NULL,"
-                    + "CARRERA INT NOT NULL,"
+                    + "ESTUDIANTE INTEGER NOT NULL,"
+                    + "CARRERA INTEGER NOT NULL,"
                     + "PRIMARY KEY (ESTUDIANTE, CARRERA)"
                     + ")";
             
             stm.execute(sql);
             
             sql = "CREATE TABLE ESTUDIANTE("
-                    + "ID INT PRIMARY KEY NOT NULL,"
+                    + "ID INTEGER PRIMARY KEY NOT NULL,"
                     + "CODIGO CHAR(15) NOT NULL"
                     + ")";
             
             stm.execute(sql);
             
             sql = "CREATE TABLE ADMIN("
-                    + "ID   INT PRIMARY KEY NOT NULL,"
-                    + "TIPO INT NOT NULL"//0 PARA VOTOS 1 PARA EAFIT
+                    + "ID   INTEGER PRIMARY KEY NOT NULL,"
+                    + "TIPO INTEGER NOT NULL"//0 PARA VOTOS 1 PARA EAFIT
                     + ")";
             
             stm.execute(sql);
             
             sql = "CREATE TABLE USUARIO("
-                    + "ID INTEGER PRIMARY KEY NOT NULL,"
+                    + "ID INTEGEREGER PRIMARY KEY NOT NULL,"
                     + "NOMBRE TEXT NOT NULL,"
                     + "CORREO TEXT NOT NULL,"
                     + "PASSWORD TEXT NOT NULL"

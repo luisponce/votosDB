@@ -1,7 +1,9 @@
 
 package com.personas;
 
+import com.universidad.Escuela;
 import com.votosdb.DBOps;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -53,5 +55,18 @@ public class AdmEafit extends Admin{
      */
     public void Retirar(){
         
+    }
+    
+    public void RetirarEscuela(Escuela e) throws SQLException{
+        //Eliminar la escuela de la BDs
+        Connection c = DBOps.getInstance().ConnectDB();
+        Statement stm = c.createStatement();
+
+        String sql = "DELETE from ESCUELA where NOMBRE='" +e.getNombre()+ "';";
+
+        stm.executeUpdate(sql);
+
+        stm.close();
+        c.close();
     }
 }

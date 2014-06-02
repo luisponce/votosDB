@@ -51,6 +51,7 @@ public class UniversidadEafit {
             listEscuelas.add(cur);
         }
         
+        result.close();
         stm.close();
         c.close();
         

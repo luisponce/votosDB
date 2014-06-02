@@ -61,7 +61,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel7 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
+        butAgregarCarrera = new javax.swing.JButton();
         pnlEstudiantes = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
@@ -168,13 +168,13 @@ public class FrameAdminEafit extends javax.swing.JFrame {
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Operaciones"));
 
-        jButton2.setText("Agregar Carrera");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        butAgregarCarrera.setText("Agregar Carrera");
+        butAgregarCarrera.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                butAgregarCarreraActionPerformed(evt);
             }
         });
-        jPanel7.add(jButton2);
+        jPanel7.add(butAgregarCarrera);
 
         javax.swing.GroupLayout pnlCarrerasLayout = new javax.swing.GroupLayout(pnlCarreras);
         pnlCarreras.setLayout(pnlCarrerasLayout);
@@ -300,9 +300,40 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Se ingreso la escuela: \"" + nombre + "\" exitosamente.");
     }//GEN-LAST:event_AgregarActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void butAgregarCarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butAgregarCarreraActionPerformed
+        try {
+            //obtener las carreras
+            ArrayList<Escuela> list;
+            list = UniversidadEafit.getINSTANCE().getEscuelas();
+            Object[] possibleValues = new Object[list.size()];
+            for (int i = 0; i < list.size(); i++) {
+                possibleValues[i] = list.get(i).getNombre();
+            }
+            
+            Object selectedValue = JOptionPane.showInputDialog(null,
+                    "A cual escuela pertenece la carrera a ingresar",
+                    "Ingresar Carrera",
+                    JOptionPane.INFORMATION_MESSAGE, null,
+                    possibleValues, possibleValues[0]);
+            
+            if(selectedValue != null){//si no cancelo la operacion
+                String nombre = JOptionPane.showInputDialog("Ingrese el nombre"
+                        + " de la carrera");
+                if(nombre != null){
+                    //si no cancelo la operacion
+                    adminLogedIn.IngresarCarrera(nombre, 
+                            new Escuela((String) selectedValue));
+                }
+            }
+        } catch (SQLException ex) {
+             JOptionPane.showMessageDialog(null, "Error ingresando carrera",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(FrameAdminEafit.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex,
+                    "Error ingresando carrera", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_butAgregarCarreraActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
@@ -464,7 +495,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
     private javax.swing.JButton Agregar;
     private javax.swing.JButton Eliminar;
     private javax.swing.JButton Modificar;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton butAgregarCarrera;
     private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;

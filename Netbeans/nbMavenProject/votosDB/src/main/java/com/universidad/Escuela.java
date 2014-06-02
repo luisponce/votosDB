@@ -56,8 +56,8 @@ public class Escuela {
         Statement stm = c.createStatement();
         
         //obtener las carreras que pertenecen a esta escuela
-        String sql = "SELECT NOMBRE FROM CARRERA"
-                + "WHERE  ESCUELA = " + getDBid();
+        String sql = "SELECT NOMBRE FROM CARRERA "
+                + "WHERE ESCUELA = " + getDBid();
         ResultSet res = stm.executeQuery(sql);
         
         ArrayList<Carrera> carreras = new ArrayList<>();

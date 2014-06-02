@@ -8,6 +8,7 @@ package com.GUI;
 
 import com.personas.AdmEafit;
 import com.sun.imageio.plugins.jpeg.JPEG;
+import com.universidad.Carrera;
 import com.universidad.Escuela;
 import com.universidad.UniversidadEafit;
 import com.votosdb.DBOps;
@@ -20,13 +21,15 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
  */
 public class FrameAdminEafit extends javax.swing.JFrame {
 
-    private AdmEafit adminLogedIn;
+    private final AdmEafit adminLogedIn;
     
     /**
      * Creates new form FrameAdminEafit
@@ -59,7 +62,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         pnlCarreras = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableCarreras = new javax.swing.JTable();
         jPanel7 = new javax.swing.JPanel();
         butAgregarCarrera = new javax.swing.JButton();
         pnlEstudiantes = new javax.swing.JPanel();
@@ -145,15 +148,8 @@ public class FrameAdminEafit extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Escuelas", pnlEscuelas);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        tableCarreras.setModel(ConstruirTablaCarreras());
+        jScrollPane1.setViewportView(tableCarreras);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -292,7 +288,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
             }
             
             adminLogedIn.IngresarEscuela(nombre);
-            actualizarLista();
+            ActualizarListaEscuelas();
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null, e, "Error Ingresando Escuela", JOptionPane.ERROR_MESSAGE);
             return;
@@ -325,6 +321,8 @@ public class FrameAdminEafit extends javax.swing.JFrame {
                             new Escuela((String) selectedValue));
                 }
             }
+            
+            UpdateTablaCarreras();
         } catch (SQLException ex) {
              JOptionPane.showMessageDialog(null, "Error ingresando carrera",
                     "Error", JOptionPane.ERROR_MESSAGE);
@@ -444,7 +442,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         try {
             adminLogedIn.RetirarEscuela(new Escuela(name));
             
-            actualizarLista();
+            ActualizarListaEscuelas();
             
             JOptionPane.showMessageDialog(null, "Se elimino la escuela \"" +name+ "\".");
         } catch (SQLException ex) {
@@ -472,7 +470,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
             
             stm.executeUpdate(sql);
             
-            actualizarLista();
+            ActualizarListaEscuelas();
             
             JOptionPane.showMessageDialog(null, "Se cambio el nombre de la "
                     + "escuela \"" +nombreOld+ "\" a \"" +nombre+ "\"");
@@ -487,8 +485,42 @@ public class FrameAdminEafit extends javax.swing.JFrame {
     /**
      * Actualiza el contenido de la lista
      */
-    public void actualizarLista(){
+    public void ActualizarListaEscuelas(){
         listEscuelas.setModel(arrayToListModel(getListEscuelas()));
+    }
+    
+    /**
+     * Obtener la tabla con la informacion de todas las carreras
+     * @return El tableModel con las carreras en la BDs
+     * @throws SQLException 
+     */
+    public TableModel ConstruirTablaCarreras() {
+        try {
+            Object[] columnNames = {"Nombre", "Escuela"};
+            DefaultTableModel table = new DefaultTableModel(columnNames, 0);
+            
+            ArrayList<Escuela> escuelas;
+            escuelas = UniversidadEafit.getINSTANCE().getEscuelas();
+            
+            for (Escuela escuela : escuelas) {
+                for (Carrera carrera : escuela.getCarreras()) {
+                    String[] str = new String[2];
+                    str[0] = carrera.getNombre();
+                    str[1] = escuela.getNombre();
+                    table.addRow(str);
+                }
+            }
+            
+            return table;
+        } catch (SQLException ex) {
+            Logger.getLogger(FrameAdminEafit.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error con la base de datos", "Error", JOptionPane.ERROR_MESSAGE);
+            return new DefaultTableModel();
+        }
+    }
+    
+    public void UpdateTablaCarreras(){
+        tableCarreras.setModel(ConstruirTablaCarreras());
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -507,11 +539,11 @@ public class FrameAdminEafit extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JList listEscuelas;
     private javax.swing.JPanel pnlCarreras;
     private javax.swing.JPanel pnlEscuelas;
     private javax.swing.JPanel pnlEstudiantes;
+    private javax.swing.JTable tableCarreras;
     // End of variables declaration//GEN-END:variables
 
 }

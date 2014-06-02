@@ -59,7 +59,6 @@ public class DBOps {
           System.err.println(e);
           System.exit(0);
         }
-        System.out.println("Coneccion con Base de datos exitosa");
         
         return c;
     }

@@ -72,6 +72,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         pnlOpcionesEst = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AdminEafit");
@@ -184,7 +185,13 @@ public class FrameAdminEafit extends javax.swing.JFrame {
             pnlCarrerasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlCarrerasLayout.createSequentialGroup()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+<<<<<<< HEAD
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+=======
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                .addContainerGap())
+>>>>>>> 9aefa0ce0be92bb2b2fef7ece110b6aa34cc746a
         );
         pnlCarrerasLayout.setVerticalGroup(
             pnlCarrerasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,17 +231,34 @@ public class FrameAdminEafit extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
+        jButton1.setText("Retirar Estudiante");
+        jPanel10.add(jButton1);
+
         javax.swing.GroupLayout pnlEstudiantesLayout = new javax.swing.GroupLayout(pnlEstudiantes);
         pnlEstudiantes.setLayout(pnlEstudiantesLayout);
         pnlEstudiantesLayout.setHorizontalGroup(
             pnlEstudiantesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlEstudiantesLayout.createSequentialGroup()
+<<<<<<< HEAD
                 .addComponent(pnlTablaEst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlEstudiantesLayout.setVerticalGroup(
             pnlEstudiantesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlTablaEst, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+=======
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        pnlEstudiantesLayout.setVerticalGroup(
+            pnlEstudiantesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(pnlEstudiantesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+>>>>>>> 9aefa0ce0be92bb2b2fef7ece110b6aa34cc746a
         );
 
         jTabbedPane1.addTab("Estudiantes", pnlEstudiantes);
@@ -243,9 +267,13 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+<<<<<<< HEAD
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 548, Short.MAX_VALUE)
                 .addContainerGap())
+=======
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 554, Short.MAX_VALUE)
+>>>>>>> 9aefa0ce0be92bb2b2fef7ece110b6aa34cc746a
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -540,6 +568,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
     private javax.swing.JButton Eliminar;
     private javax.swing.JButton Modificar;
     private javax.swing.JButton butAgregarCarrera;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,8 +17,11 @@ import java.sql.Statement;
 public class AdmEafit extends Admin{
 
     @Override
-    public void IngresarAdmin() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void IngresarAdmin() throws SQLException {
+        Connection c = DBOps.getInstance().ConnectDB();
+        Statement stm = c.createStatement();
+        String sql = "Insert into ADMIN (TIPO) values" + "(" + 1 + ");";
+        stm = c.prepareStatement(sql);
     }
 
     @Override
@@ -153,6 +158,18 @@ public class AdmEafit extends Admin{
      * Retirar las carreras, escuelas y estudiantes a la universidad
      */
     public void Retirar(){
+        
+    }
+    
+    public void Retirar(Estudiante e) throws SQLException{
+        int identificacion = e.getCodigo();
+        Connection c = DBOps.getInstance().ConnectDB();
+        Statement stm = c.createStatement();
+        String sql = "DELETE FROM ESTUDIANTE where CODIGO=" +
+                identificacion + ";";
+        stm.executeUpdate(sql);
+        stm.close();
+        c.close();
         
     }
     

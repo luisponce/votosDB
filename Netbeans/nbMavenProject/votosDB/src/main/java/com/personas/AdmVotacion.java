@@ -52,8 +52,8 @@ public class AdmVotacion extends Admin{
             Statement stmt;
             String sql = "Insert into VOTACION (NOMBRE, FECHA_INICIO, FECHA_FIN)"
                     + " values ("+ "'" + nuevaVotacion.getNombre() + "'" +
-                    ", "+nuevaVotacion.getFechaInicio()+
-                    ", "+nuevaVotacion.getFechaFin()+")";
+                    ", "+ "'" + nuevaVotacion.getFechaInicio() + "'" +
+                    ", "+ "'" + nuevaVotacion.getFechaFin()+ "'" + ")";
             stmt = con.prepareStatement(sql);
     }
     

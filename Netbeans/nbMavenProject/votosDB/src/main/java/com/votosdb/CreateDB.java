@@ -99,6 +99,14 @@ public class CreateDB {
             
             stm.execute(sql);
             
+            sql = "CREATE TABLE CANDIDATO("
+                    + "CANDIDATO INTEGER NOT NULL, "
+                    + "VOTACION INTEGER NOT NULL, "
+                    + "PRIMARY KEY (CANDIDATO, VOTACION)"
+                    + ")";
+            
+            stm.execute(sql);
+            
             System.out.println("Tablas con esquema creadas exitosamente");
             
             String passwordDefault = "eafit123";

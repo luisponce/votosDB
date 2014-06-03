@@ -16,8 +16,11 @@ import java.util.logging.Logger;
 public class AdmEafit extends Admin{
 
     @Override
-    public void IngresarAdmin() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void IngresarAdmin() throws SQLException {
+        Connection c = DBOps.getInstance().ConnectDB();
+        Statement stm = c.createStatement();
+        String sql = "Insert into ADMIN (TIPO) values" + "(" + 1 + ");";
+        stm = c.prepareStatement(sql);
     }
 
     @Override

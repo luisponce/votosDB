@@ -6,6 +6,7 @@ import com.universidad.Carrera;
 import com.votacion.Votacion;
 import com.votosdb.DBOps;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,8 +17,11 @@ import java.util.Date;
 public class AdmVotacion extends Admin{
 
     @Override
-    public void IngresarAdmin() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void IngresarAdmin() throws SQLException {
+        Connection c = DBOps.getInstance().ConnectDB();
+        Statement stm = c.createStatement();
+        String sql = "Insert into ADMIN (TIPO) values" + "(" + 0 + ");";
+        stm = c.prepareStatement(sql);
     }
 
     @Override

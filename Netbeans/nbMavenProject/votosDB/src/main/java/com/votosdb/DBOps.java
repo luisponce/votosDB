@@ -8,11 +8,7 @@ package com.votosdb;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -61,37 +57,5 @@ public class DBOps {
         }
         
         return c;
-    }
-    
-    /**
-     * Metodo para obtener el siguiente ID para los Usuarios
-     * 
-     * @return El siguiente ID para los usuarios. El maximo ID actual +1
-     * @throws SQLException 
-     */
-    public int getNextID() throws SQLException{
-        //establecer coneccion con DB
-        Connection c = ConnectDB();
-        Statement stm = c.createStatement();
-
-        //obtener el maximo ID
-        String sql = "SELECT MAX(ID)"
-                   + "FROM USUARIO";
-
-        //resultado del query
-        ResultSet res = stm.executeQuery(sql);
-
-        
-        int curMaxID;
-        if(res != null){//si hay usuarios
-            curMaxID = res.getInt(1);//1 porque la primera columna es la 1
-            curMaxID++;
-            res.close();
-        } else { //si no hay usuarios
-            curMaxID = 0;
-        }
-        stm.close(); c.close();
-
-        return curMaxID;
     }
 }

@@ -58,8 +58,4 @@ public class DBOps {
         
         return c;
     }
-<<<<<<< HEAD
-    
-=======
->>>>>>> merging
 }

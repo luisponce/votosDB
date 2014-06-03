@@ -11,6 +11,18 @@ public class Estudiante extends Persona {
 	private int Codigo;
 	private ArrayList<Carrera> Carreras;
 	private boolean candidato;
+
+    public int getCodigo() {
+        return Codigo;
+    }
+
+    public ArrayList<Carrera> getCarreras() {
+        return Carreras;
+    }
+
+    public boolean isCandidato() {
+        return candidato;
+    }
     
 	public void Votar() {
         //TODO: implementar votar

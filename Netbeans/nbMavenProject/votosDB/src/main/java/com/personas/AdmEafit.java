@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -100,6 +102,18 @@ public class AdmEafit extends Admin{
      * Retirar las carreras, escuelas y estudiantes a la universidad
      */
     public void Retirar(){
+        
+    }
+    
+    public void Retirar(Estudiante e) throws SQLException{
+        int identificacion = e.getCodigo();
+        Connection c = DBOps.getInstance().ConnectDB();
+        Statement stm = c.createStatement();
+        String sql = "DELETE FROM ESTUDIANTE where CODIGO=" +
+                identificacion + ";";
+        stm.executeUpdate(sql);
+        stm.close();
+        c.close();
         
     }
     

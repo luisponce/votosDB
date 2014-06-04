@@ -103,7 +103,8 @@ public class AdmEafit extends Admin{
     }
     
     public void IngresarEstudiante(String nombre, 
-            String correo, String password, String codigo, Carrera[] carreras) throws SQLException, Exception{
+            String correo, String password, String codigo, Carrera[] carreras) 
+            throws SQLException, Exception{
         
         Connection c = DBOps.getInstance().ConnectDB();
         Statement stm = c.createStatement();

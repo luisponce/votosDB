@@ -57,4 +57,19 @@ public class UniversidadEafit {
         
         return listEscuelas;
     }
+    
+    /**
+     * Obtiene todas las carreras en la Universidad segun la BDs
+     * @return Un arrayList con las carreras en la BDs
+     * @throws SQLException 
+     */
+    public ArrayList<Carrera> getCarreras() throws SQLException{
+        ArrayList<Escuela> listaEscuelas = getEscuelas();
+        ArrayList<Carrera> listaCarreras = new ArrayList<>(); 
+        for (Escuela escuela : listaEscuelas) {
+            listaCarreras.addAll(escuela.getCarreras());
+        }
+        
+        return listaCarreras;
+    }
 }

@@ -91,7 +91,7 @@ public class CreateDB {
             stm.execute(sql);
             
             sql = "CREATE TABLE USUARIO("
-                    + "ID INTEGEREGER PRIMARY KEY NOT NULL,"
+                    + "ID INTEGER PRIMARY KEY NOT NULL,"
                     + "NOMBRE TEXT NOT NULL,"
                     + "CORREO TEXT NOT NULL,"
                     + "PASSWORD TEXT NOT NULL"

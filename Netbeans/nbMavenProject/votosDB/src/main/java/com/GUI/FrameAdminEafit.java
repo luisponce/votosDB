@@ -68,8 +68,8 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         pnlEstudiantes = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnAgregarEstudiante = new javax.swing.JButton();
+        btnRetirarEstudiante = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AdminEafit");
@@ -202,16 +202,21 @@ public class FrameAdminEafit extends javax.swing.JFrame {
             .addGap(0, 371, Short.MAX_VALUE)
         );
 
-        jButton3.setText("Agregar Estudiante");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnAgregarEstudiante.setText("Agregar Estudiante");
+        btnAgregarEstudiante.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnAgregarEstudianteActionPerformed(evt);
             }
         });
-        jPanel10.add(jButton3);
+        jPanel10.add(btnAgregarEstudiante);
 
-        jButton1.setText("Retirar Estudiante");
-        jPanel10.add(jButton1);
+        btnRetirarEstudiante.setText("Retirar Estudiante");
+        btnRetirarEstudiante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRetirarEstudianteActionPerformed(evt);
+            }
+        });
+        jPanel10.add(btnRetirarEstudiante);
 
         javax.swing.GroupLayout pnlEstudiantesLayout = new javax.swing.GroupLayout(pnlEstudiantes);
         pnlEstudiantes.setLayout(pnlEstudiantesLayout);
@@ -304,6 +309,11 @@ public class FrameAdminEafit extends javax.swing.JFrame {
             //obtener las carreras
             ArrayList<Escuela> list;
             list = UniversidadEafit.getINSTANCE().getEscuelas();
+            if(list.isEmpty()){
+                JOptionPane.showMessageDialog(null, "No hay ninguna escuela",
+                        "Error ingresando carrera", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             Object[] possibleValues = new Object[list.size()];
             for (int i = 0; i < list.size(); i++) {
                 possibleValues[i] = list.get(i).getNombre();
@@ -336,9 +346,65 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_butAgregarCarreraActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void btnAgregarEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarEstudianteActionPerformed
+        //mostrar el panel como un modal que bloquea el input hasta que lo resuelva
+        RegistroUsaurio registro = new RegistroUsaurio(this, true);
+        registro.setVisible(true);
+        
+        while(registro.getReturnStatus() == -1) ;//esperar a que solucione el modal
+        
+        if(registro.getReturnStatus() == 1){
+            try {
+                String codigo = JOptionPane.showInputDialog("Ingrese codigo del estudiante");
+                
+                //se cancelo la operacion
+                if(codigo == null){
+                    return;
+                }
+                
+                String nombre = registro.getNombre();
+                String correo = registro.getCorreo();
+                String password = registro.getPassword();
+                registro.clearPassword();
+                
+                ArrayList<Carrera> list = UniversidadEafit.getINSTANCE().getCarreras();
+                
+                if(list.isEmpty()){ //si no hay carreras
+                    JOptionPane.showMessageDialog(null, "No se encuentra "
+                            + "ninguna Carrera, se requiere almenos una para "
+                            + "ingresar un estudiante", "ERROR!!", 
+                            JOptionPane.ERROR_MESSAGE);
+                }
+                
+                Object[] possibleValues = new Object[list.size()];
+                
+                for (int i = 0; i < possibleValues.length; i++) {
+                    possibleValues[i] = list.get(i).getNombre();
+                }
+                
+                Object selectedValue = JOptionPane.showInputDialog(null,
+                        "A cual escuela pertenece la carrera a ingresar",
+                        "Ingresar Carrera",
+                        JOptionPane.INFORMATION_MESSAGE, null,
+                        possibleValues, possibleValues[0]);
+                
+                if(selectedValue == null){//si cancelo la operacion
+                    return;
+                }
+                
+                Carrera carrera = new Carrera(selectedValue.toString());
+                
+                adminLogedIn.IngresarEstudiante(nombre, correo, password, 
+                        codigo, carrera);
+                
+                JOptionPane.showMessageDialog(null, "Estudiante ingresado exitosamente");
+            } catch (Exception ex) {
+                Logger.getLogger(FrameAdminEafit.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Error ingresando "
+                        + "estudiante", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnAgregarEstudianteActionPerformed
 
     private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
         if(listEscuelas.isSelectionEmpty()){
@@ -359,6 +425,10 @@ public class FrameAdminEafit extends javax.swing.JFrame {
             ModificarEscuela(listEscuelas.getSelectedIndex());
         }
     }//GEN-LAST:event_ModificarActionPerformed
+
+    private void btnRetirarEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetirarEstudianteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRetirarEstudianteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -530,9 +600,9 @@ public class FrameAdminEafit extends javax.swing.JFrame {
     private javax.swing.JButton Agregar;
     private javax.swing.JButton Eliminar;
     private javax.swing.JButton Modificar;
+    private javax.swing.JButton btnAgregarEstudiante;
+    private javax.swing.JButton btnRetirarEstudiante;
     private javax.swing.JButton butAgregarCarrera;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;

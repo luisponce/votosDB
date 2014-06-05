@@ -8,10 +8,12 @@ package com.GUI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 /**
@@ -36,6 +38,8 @@ public class RegistroUsaurio extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
+        returnStatus = -1;
+        
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -64,16 +68,33 @@ public class RegistroUsaurio extends javax.swing.JDialog {
     }
     
     public String getPassword(){
-        return String.copyValueOf(txtPassword.getPassword());
+        return new String(txtPassword.getPassword());
     }
     
-    private void clearPassword(){
+    public void clearPassword(){
         txtPassword.setText("");
         txtConfPassword.setText("");
     }
     
     private boolean checkPassword(){
-        return txtPassword.getPassword() == txtPassword.getPassword();
+        if(txtPassword.getPassword().length == 0){
+            return false;
+        }
+        return Arrays.equals(txtPassword.getPassword(), txtConfPassword.getPassword());
+    }
+    
+    private boolean checkEmail(){
+        try {
+            String lineIwant = txtCorreo.getText();
+            String emailreg = "^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$";
+            Boolean b = lineIwant.matches(emailreg);
+
+            return b;
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 
     /**
@@ -209,10 +230,20 @@ public class RegistroUsaurio extends javax.swing.JDialog {
         getRootPane().setDefaultButton(okButton);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        doClose(RET_OK);
+        if(!checkEmail()){
+            JOptionPane.showMessageDialog(null, "Email no es valido", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            if(!checkPassword()){
+                clearPassword();
+                JOptionPane.showMessageDialog(null, "los passwords no coinciden o es vacio", "error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                doClose(RET_OK);
+            }
+        }
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed

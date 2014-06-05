@@ -61,7 +61,10 @@ public class AdmVotacion extends Admin{
                     + " values ("+ "'" + nuevaVotacion.getNombre() + "'" +
                     ", "+ "'" + nuevaVotacion.getFechaInicio() + "'" +
                     ", "+ "'" + nuevaVotacion.getFechaFin()+ "'" + ")";
-            stmt = con.prepareStatement(sql);
+            stmt = con.createStatement();
+            
+            stmt.execute(sql);
+             
     }
     
     public void RegistrarCandidato(int codigo, ArrayList<Carrera> carreras,

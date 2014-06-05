@@ -91,14 +91,7 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Votaciones", jPanel1);
 
-        tblCandidatos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
+        tblCandidatos.setModel(buildTableCandidatos());
         jScrollPane2.setViewportView(tblCandidatos);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -209,6 +202,30 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
         
     }
     
+    public String obtenerCandidato(int id, Connection c) throws SQLException{
+       
+        
+        Statement stm = c.createStatement();
+        
+        String sql = "Select NOMBRE from USUARIO where ID =" + id;
+        ResultSet res = stm.executeQuery(sql);
+        String ans = res.getString(1);
+        stm.close();
+        //c.close();
+        return ans;
+    }
+    
+    public String obtenerVotacion(int id, Connection c) throws SQLException{
+        Statement stm = c.createStatement();
+        
+        String sql = "Select NOMBRE from VOTACION where ID =" + id;
+        ResultSet res = stm.executeQuery(sql);
+        String ans = res.getString(1);
+        stm.close();
+        //c.close();
+        return ans;
+    }
+    
     public TableModel buildTableCandidatos() {
         try {
             DefaultTableModel tabla = new DefaultTableModel();
@@ -221,12 +238,13 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
             String sql = "Select * from CANDIDATO";
             ResultSet res = stm.executeQuery(sql);
             while(res.next()){
-                String candidato = res.getString("CANDIDATO");
-                String votacion = res.getString("FVotacion");
-                Object[] arreglo = {candidato, votacion};
+                String idcandidato = res.getString("CANDIDATO");
+                String idvotacion = res.getString("VOTACION");
+                Object[] arreglo = {obtenerCandidato(Integer.parseInt(idcandidato), c), obtenerVotacion(Integer.parseInt(idvotacion), c)};
                 tabla.addRow(arreglo);
             }
-            
+            stm.close();
+            c.close();
             return tabla;
         } catch (SQLException ex) {
             Logger.getLogger(FrameAdminVotacion.class.getName()).log(Level.SEVERE, null, ex);
@@ -235,6 +253,10 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
             return new DefaultTableModel();
         }
         
+    }
+    
+    public void updateTablaCandidatos(){
+        tblCandidatos.setModel(buildTableCandidatos());
     }
     
     public void updateTablaVotaciones() {

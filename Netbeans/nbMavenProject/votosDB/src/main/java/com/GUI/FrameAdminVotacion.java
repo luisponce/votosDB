@@ -6,6 +6,17 @@
 
 package com.GUI;
 
+import com.votosdb.DBOps;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 /**
  *
  * @author jonathaneidelman
@@ -33,26 +44,29 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblVotaciones = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnCrearVotacion = new javax.swing.JButton();
+        btnCandidatos = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblCandidatos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        tblVotaciones.setModel(buildTable());
         jScrollPane1.setViewportView(tblVotaciones);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Opciones"));
 
-        jButton1.setText("Crear Votacion");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnCrearVotacion.setText("Crear Votacion");
+        btnCrearVotacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnCrearVotacionActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton1);
+        jPanel3.add(btnCrearVotacion);
 
-        jButton2.setText("jButton2");
-        jPanel3.add(jButton2);
+        btnCandidatos.setText("Añadir Candidatos");
+        jPanel3.add(btnCandidatos);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -60,10 +74,10 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -71,21 +85,34 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("Votaciones", jPanel1);
 
+        tblCandidatos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane2.setViewportView(tblCandidatos);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 391, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 612, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 315, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Candidatos", jPanel2);
@@ -107,12 +134,13 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        vwCrearVotacion ventana = new vwCrearVotacion();
+    private void btnCrearVotacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearVotacionActionPerformed
+        FrameCrearVotacion ventana = new FrameCrearVotacion(this);
         ventana.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnCrearVotacionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -148,15 +176,81 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
             }
         });
     }
-
+    
+    public TableModel buildTable() {
+        try {
+            DefaultTableModel tabla = new DefaultTableModel();
+            tabla.addColumn("Nombre");
+            tabla.addColumn("Fecha Inicio");
+            tabla.addColumn("Fecha fin");
+            
+            //meter todas las votaciones en la tabla.
+            Connection c = DBOps.getInstance().ConnectDB();
+            Statement stm = c.createStatement();
+            String sql = "Select * from VOTACION";
+            ResultSet res = stm.executeQuery(sql);
+            while(res.next()){
+                String nombre = res.getString("NOMBRE");
+                String f1 = res.getString("FECHA_INICIO");
+                String f2 = res.getString("FECHA_FIN");
+                Object[] arreglo = {nombre, f1.substring(0, 11) +
+                        f1.substring(f1.length() - 4), f2.substring(0, 11) +
+                        f2.substring(f2.length() - 4)};
+                tabla.addRow(arreglo);
+            }
+            
+            return tabla;
+        } catch (SQLException ex) {
+            Logger.getLogger(FrameAdminVotacion.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error obteniendo informacion"
+                    + " de votaciones", null, JOptionPane.ERROR_MESSAGE);
+            return new DefaultTableModel();
+        }
+        
+    }
+    
+    public TableModel buildTableCandidatos() {
+        try {
+            DefaultTableModel tabla = new DefaultTableModel();
+            tabla.addColumn("Candidato");
+            tabla.addColumn("Votacion");
+            
+            //meter todas las votaciones en la tabla.
+            Connection c = DBOps.getInstance().ConnectDB();
+            Statement stm = c.createStatement();
+            String sql = "Select * from CANDIDATO";
+            ResultSet res = stm.executeQuery(sql);
+            while(res.next()){
+                String candidato = res.getString("CANDIDATO");
+                String votacion = res.getString("FVotacion");
+                Object[] arreglo = {candidato, votacion};
+                tabla.addRow(arreglo);
+            }
+            
+            return tabla;
+        } catch (SQLException ex) {
+            Logger.getLogger(FrameAdminVotacion.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error obteniendo informacion"
+                    + " de votaciones", null, JOptionPane.ERROR_MESSAGE);
+            return new DefaultTableModel();
+        }
+        
+    }
+    
+    public void updateTablaVotaciones() {
+        tblVotaciones.setModel(buildTable());
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnCandidatos;
+    private javax.swing.JButton btnCrearVotacion;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable tblCandidatos;
     private javax.swing.JTable tblVotaciones;
     // End of variables declaration//GEN-END:variables
 }

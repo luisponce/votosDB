@@ -27,10 +27,9 @@ public class Votacion {
         return Nombre;
     }
 
-    public Votacion(Object FechaInicio, Object FechaFin, Estudiante[] candidatos, String Nombre) {
+    public Votacion(Object FechaInicio, Object FechaFin, String Nombre) {
         this.FechaInicio = FechaInicio;
         this.FechaFin = FechaFin;
-        this.candidatos = candidatos;
         this.Nombre = Nombre;
         this.Votos = new ArrayList<>();
     }

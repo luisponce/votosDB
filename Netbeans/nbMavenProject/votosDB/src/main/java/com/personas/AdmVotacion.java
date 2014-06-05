@@ -32,8 +32,7 @@ public class AdmVotacion extends Admin{
     /*
         le da la potestad a un admin de iniciar una votacion.
     */
-    public void IniciarVotacion(Date fechaIni, Date fechaFin,
-            Estudiante[] postulados, String nombre) throws Exception{
+    public void IniciarVotacion(Date fechaIni, Date fechaFin, String nombre) throws Exception{
             Date hoy = new Date(); //Se captura la fecha en ese momento.
             int año = hoy.getYear(); 
             int mes = hoy.getMonth();
@@ -50,8 +49,7 @@ public class AdmVotacion extends Admin{
                 throw new Exception("La fecha de inicio de votacion no"
                         + " es válida.");
             }
-            Votacion nuevaVotacion = new Votacion(fechaIni, fechaFin,
-                    postulados, nombre);
+            Votacion nuevaVotacion = new Votacion(fechaIni, fechaFin, nombre);
             DBOps ops = DBOps.getInstance();
             Connection con = ops.ConnectDB();
             Statement stmt;
@@ -64,6 +62,8 @@ public class AdmVotacion extends Admin{
             stmt = con.createStatement();
             
             stmt.execute(sql);
+            stmt.close();
+            con.close();
              
     }
     

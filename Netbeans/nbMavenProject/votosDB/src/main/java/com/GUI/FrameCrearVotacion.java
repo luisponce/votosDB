@@ -11,18 +11,21 @@ import com.personas.Estudiante;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author jonathaneidelman
  */
-public class vwCrearVotacion extends javax.swing.JFrame {
+public class FrameCrearVotacion extends javax.swing.JFrame {
+    private final FrameAdminVotacion padre;
 
     /**
      * Creates new form vwCrearVotacion
      */
-    public vwCrearVotacion() {
+    public FrameCrearVotacion(FrameAdminVotacion padre) {
         initComponents();
+        this.padre = padre;
     }
 
     /**
@@ -43,7 +46,7 @@ public class vwCrearVotacion extends javax.swing.JFrame {
         txtFin = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Crear una votacion.");
 
@@ -133,6 +136,7 @@ public class vwCrearVotacion extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
@@ -148,10 +152,19 @@ public class vwCrearVotacion extends javax.swing.JFrame {
             AdmVotacion admin = new AdmVotacion();
             Date fechaIni = new Date(txtInicio.getText());
             Date fechaFin = new Date(txtFin.getText());
-            Estudiante[] arr = new Estudiante[0];
-            admin.IniciarVotacion(fechaIni, fechaFin, arr, txtNombre.getText());
+            String nombre = txtNombre.getText();
+            if("".equals(nombre) || nombre == null){
+                JOptionPane.showMessageDialog(null, "El nombre no puede ser"
+                        + " vacio", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            admin.IniciarVotacion(fechaIni, fechaFin, txtNombre.getText());
+            padre.updateTablaVotaciones();
+            setVisible(false);
+            dispose();
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            Logger.getLogger(FrameCrearVotacion.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -176,20 +189,20 @@ public class vwCrearVotacion extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(vwCrearVotacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCrearVotacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(vwCrearVotacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCrearVotacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(vwCrearVotacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCrearVotacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(vwCrearVotacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameCrearVotacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new vwCrearVotacion().setVisible(true);
+                new FrameCrearVotacion(null).setVisible(true);
             }
         });
     }

@@ -7,7 +7,6 @@
 package com.GUI;
 
 import com.personas.AdmEafit;
-import com.sun.imageio.plugins.jpeg.JPEG;
 import com.universidad.Carrera;
 import com.universidad.Escuela;
 import com.universidad.UniversidadEafit;
@@ -56,9 +55,9 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         listEscuelas = new javax.swing.JList();
         jPanel1 = new javax.swing.JPanel();
-        Agregar = new javax.swing.JButton();
-        Eliminar = new javax.swing.JButton();
-        Modificar = new javax.swing.JButton();
+        AgregarEscuela = new javax.swing.JButton();
+        EliminarEscuela = new javax.swing.JButton();
+        Escuela = new javax.swing.JButton();
         pnlCarreras = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -67,6 +66,8 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         butAgregarCarrera = new javax.swing.JButton();
         pnlEstudiantes = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         jPanel10 = new javax.swing.JPanel();
         btnAgregarEstudiante = new javax.swing.JButton();
         btnRetirarEstudiante = new javax.swing.JButton();
@@ -103,30 +104,30 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Operaciones"));
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 10));
 
-        Agregar.setText("Agregar Escuela");
-        Agregar.addActionListener(new java.awt.event.ActionListener() {
+        AgregarEscuela.setText("Agregar Escuela");
+        AgregarEscuela.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AgregarActionPerformed(evt);
+                AgregarEscuelaActionPerformed(evt);
             }
         });
-        jPanel1.add(Agregar);
+        jPanel1.add(AgregarEscuela);
 
-        Eliminar.setText("Eliminar Escuela");
-        Eliminar.setToolTipText("Eliminar la escuela seleccionada");
-        Eliminar.addActionListener(new java.awt.event.ActionListener() {
+        EliminarEscuela.setText("Eliminar Escuela");
+        EliminarEscuela.setToolTipText("Eliminar la escuela seleccionada");
+        EliminarEscuela.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EliminarActionPerformed(evt);
+                EliminarEscuelaActionPerformed(evt);
             }
         });
-        jPanel1.add(Eliminar);
+        jPanel1.add(EliminarEscuela);
 
-        Modificar.setText("Modificar Registro");
-        Modificar.addActionListener(new java.awt.event.ActionListener() {
+        Escuela.setText("Modificar Registro");
+        Escuela.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ModificarActionPerformed(evt);
+                EscuelaActionPerformed(evt);
             }
         });
-        jPanel1.add(Modificar);
+        jPanel1.add(Escuela);
 
         javax.swing.GroupLayout pnlEscuelasLayout = new javax.swing.GroupLayout(pnlEscuelas);
         pnlEscuelas.setLayout(pnlEscuelasLayout);
@@ -143,7 +144,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlEscuelasLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -186,21 +187,25 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         pnlCarrerasLayout.setVerticalGroup(
             pnlCarrerasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Carreras", pnlCarreras);
 
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 331, Short.MAX_VALUE)
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 371, Short.MAX_VALUE)
-        );
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Nombre", "Correo", "Codigo"
+            }
+        ));
+        jScrollPane3.setViewportView(jTable1);
+
+        jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder("Operaciones"));
 
         btnAgregarEstudiante.setText("Agregar Estudiante");
         btnAgregarEstudiante.addActionListener(new java.awt.event.ActionListener() {
@@ -218,22 +223,36 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         });
         jPanel10.add(btnRetirarEstudiante);
 
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout pnlEstudiantesLayout = new javax.swing.GroupLayout(pnlEstudiantes);
         pnlEstudiantes.setLayout(pnlEstudiantesLayout);
         pnlEstudiantesLayout.setHorizontalGroup(
             pnlEstudiantesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlEstudiantesLayout.createSequentialGroup()
-                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 6, Short.MAX_VALUE))
         );
         pnlEstudiantesLayout.setVerticalGroup(
             pnlEstudiantesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(pnlEstudiantesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Estudiantes", pnlEstudiantes);
@@ -256,7 +275,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -269,7 +288,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void AgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarActionPerformed
+    private void AgregarEscuelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarEscuelaActionPerformed
         String nombre = JOptionPane.showInputDialog("Nombre de la escuela a ingresar:");
         if(nombre == null) return;
         if(nombre.equals("")){
@@ -302,7 +321,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
             return;
         }
         JOptionPane.showMessageDialog(null, "Se ingreso la escuela: \"" + nombre + "\" exitosamente.");
-    }//GEN-LAST:event_AgregarActionPerformed
+    }//GEN-LAST:event_AgregarEscuelaActionPerformed
 
     private void butAgregarCarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butAgregarCarreraActionPerformed
         try {
@@ -406,7 +425,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnAgregarEstudianteActionPerformed
 
-    private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
+    private void EliminarEscuelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarEscuelaActionPerformed
         if(listEscuelas.isSelectionEmpty()){
             JOptionPane.showMessageDialog(null, "No hay escuela seleccionada. "
                     + "Debe seleccionar una escuela para eliminarla.", 
@@ -414,9 +433,9 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         } else {
             EliminarEscuela(listEscuelas.getSelectedIndex());
         }
-    }//GEN-LAST:event_EliminarActionPerformed
+    }//GEN-LAST:event_EliminarEscuelaActionPerformed
 
-    private void ModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarActionPerformed
+    private void EscuelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EscuelaActionPerformed
         if(listEscuelas.isSelectionEmpty()){
             JOptionPane.showMessageDialog(null, "No hay escuela seleccionada. "
                     + "Debe seleccionar una escuela para cambiarle el nombre.", 
@@ -424,7 +443,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         } else {
             ModificarEscuela(listEscuelas.getSelectedIndex());
         }
-    }//GEN-LAST:event_ModificarActionPerformed
+    }//GEN-LAST:event_EscuelaActionPerformed
 
     private void btnRetirarEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetirarEstudianteActionPerformed
         // TODO add your handling code here:
@@ -597,9 +616,9 @@ public class FrameAdminEafit extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Agregar;
-    private javax.swing.JButton Eliminar;
-    private javax.swing.JButton Modificar;
+    private javax.swing.JButton AgregarEscuela;
+    private javax.swing.JButton EliminarEscuela;
+    private javax.swing.JButton Escuela;
     private javax.swing.JButton btnAgregarEstudiante;
     private javax.swing.JButton btnRetirarEstudiante;
     private javax.swing.JButton butAgregarCarrera;
@@ -612,7 +631,9 @@ public class FrameAdminEafit extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JList listEscuelas;
     private javax.swing.JPanel pnlCarreras;
     private javax.swing.JPanel pnlEscuelas;

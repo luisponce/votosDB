@@ -15,11 +15,13 @@ import java.util.Date;
 public class AdmVotacion extends Admin{
 
     @Override
-    public void IngresarAdmin() throws SQLException {
+    public void IngresarAdmin(int id) throws SQLException {
         Connection c = DBOps.getInstance().ConnectDB();
         Statement stm = c.createStatement();
-        String sql = "Insert into ADMIN (TIPO) values" + "(" + 0 + ");";
-        stm = c.prepareStatement(sql);
+        String sql = "Insert into ADMIN (ID, TIPO) values" + "(" + id + ", " + 0 + ");";
+        stm.execute(sql);
+        stm.close();
+        c.close();
     }
 
     @Override

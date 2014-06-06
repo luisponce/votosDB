@@ -6,11 +6,15 @@
 
 package com.GUI;
 
+import com.personas.AdmVotacion;
+import com.universidad.Carrera;
+import com.universidad.UniversidadEafit;
 import com.votosdb.DBOps;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -23,11 +27,12 @@ import javax.swing.table.TableModel;
  */
 public class FrameAdminVotacion extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FrameAdminVotacion
-     */
-    public FrameAdminVotacion() {
+    private final AdmVotacion adminLogedIn;
+    
+    
+    public FrameAdminVotacion(AdmVotacion adminVotacion) {
         initComponents();
+        adminLogedIn = adminVotacion;
     }
 
     /**
@@ -49,6 +54,10 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblCandidatos = new javax.swing.JTable();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -91,14 +100,7 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Votaciones", jPanel1);
 
-        tblCandidatos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
+        tblCandidatos.setModel(buildTableCandidatos());
         jScrollPane2.setViewportView(tblCandidatos);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -116,6 +118,23 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("Candidatos", jPanel2);
+
+        jMenu1.setText("Opciones");
+
+        jMenuItem1.setText("Agregar Admin");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("Eliminar Admin");
+        jMenu1.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -141,6 +160,46 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
         FrameCrearVotacion ventana = new FrameCrearVotacion(this);
         ventana.setVisible(true);
     }//GEN-LAST:event_btnCrearVotacionActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        RegistroUsaurio registro = new RegistroUsaurio(this, true);
+        registro.setVisible(true);
+        
+        while(registro.getReturnStatus() == -1) ;//esperar a que solucione el modal
+        
+        if(registro.getReturnStatus() == 1){
+            try {
+                
+                String nombre = registro.getNombre();
+                String correo = registro.getCorreo();
+                String password = registro.getPassword();
+                registro.clearPassword();
+                if(nombre.equals("")){
+                    JOptionPane.showMessageDialog(null, "El nombre no puede ser vacio", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                    Connection c = DBOps.getInstance().ConnectDB();
+                    Statement stm = c.createStatement();
+                    String sql = "Insert into USUARIO (NOMBRE, CORREO, PASSWORD) "
+                        + "values ('" + nombre + "', '" 
+                        +  correo + "', '" + password + "' );";
+                    stm.execute(sql);
+                    sql = "Insert into ADMIN (ID, TIPO) values (last_insert_rowid(), " + 0 + ")";
+                    stm.execute(sql);
+                    stm.close();
+                    c.close();
+                    JOptionPane.showMessageDialog(null, "Admin de votacion"
+                        + " ingresado exitosamente");
+                
+                
+            } catch (Exception ex) {
+                Logger.getLogger(FrameAdminEafit.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Error ingresando "
+                        + "Admin de votacion", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -172,7 +231,8 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrameAdminVotacion().setVisible(true);
+                AdmVotacion admin = new AdmVotacion(); //para pruebas, provisional!!!
+                new FrameAdminVotacion(admin).setVisible(true);
             }
         });
     }
@@ -209,6 +269,30 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
         
     }
     
+    public String obtenerCandidato(int id, Connection c) throws SQLException{
+       
+        
+        Statement stm = c.createStatement();
+        
+        String sql = "Select NOMBRE from USUARIO where ID =" + id;
+        ResultSet res = stm.executeQuery(sql);
+        String ans = res.getString(1);
+        stm.close();
+        //c.close();
+        return ans;
+    }
+    
+    public String obtenerVotacion(int id, Connection c) throws SQLException{
+        Statement stm = c.createStatement();
+        
+        String sql = "Select NOMBRE from VOTACION where ID =" + id;
+        ResultSet res = stm.executeQuery(sql);
+        String ans = res.getString(1);
+        stm.close();
+        //c.close();
+        return ans;
+    }
+    
     public TableModel buildTableCandidatos() {
         try {
             DefaultTableModel tabla = new DefaultTableModel();
@@ -221,12 +305,13 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
             String sql = "Select * from CANDIDATO";
             ResultSet res = stm.executeQuery(sql);
             while(res.next()){
-                String candidato = res.getString("CANDIDATO");
-                String votacion = res.getString("FVotacion");
-                Object[] arreglo = {candidato, votacion};
+                String idcandidato = res.getString("CANDIDATO");
+                String idvotacion = res.getString("VOTACION");
+                Object[] arreglo = {obtenerCandidato(Integer.parseInt(idcandidato), c), obtenerVotacion(Integer.parseInt(idvotacion), c)};
                 tabla.addRow(arreglo);
             }
-            
+            stm.close();
+            c.close();
             return tabla;
         } catch (SQLException ex) {
             Logger.getLogger(FrameAdminVotacion.class.getName()).log(Level.SEVERE, null, ex);
@@ -237,6 +322,10 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
         
     }
     
+    public void updateTablaCandidatos(){
+        tblCandidatos.setModel(buildTableCandidatos());
+    }
+    
     public void updateTablaVotaciones() {
         tblVotaciones.setModel(buildTable());
     }
@@ -244,6 +333,10 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCandidatos;
     private javax.swing.JButton btnCrearVotacion;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

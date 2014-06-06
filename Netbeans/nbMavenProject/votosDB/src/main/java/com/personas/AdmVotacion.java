@@ -21,7 +21,9 @@ public class AdmVotacion extends Admin{
         Connection c = DBOps.getInstance().ConnectDB();
         Statement stm = c.createStatement();
         String sql = "Insert into ADMIN (TIPO) values" + "(" + 0 + ");";
-        stm = c.prepareStatement(sql);
+        stm.execute(sql);
+        stm.close();
+        c.close();
     }
 
     @Override

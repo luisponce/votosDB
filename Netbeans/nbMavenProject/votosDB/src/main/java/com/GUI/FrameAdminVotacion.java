@@ -245,41 +245,7 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameAdminVotacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameAdminVotacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameAdminVotacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameAdminVotacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                AdmVotacion admin = new AdmVotacion(); //para pruebas, provisional!!!
-                new FrameAdminVotacion(admin).setVisible(true);
-            }
-        });
-    }
+    
     
     public TableModel buildTable() {
         try {
@@ -293,6 +259,7 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
             Statement stm = c.createStatement();
             String sql = "Select * from VOTACION";
             ResultSet res = stm.executeQuery(sql);
+            
             while(res.next()){
                 String nombre = res.getString("NOMBRE");
                 String f1 = res.getString("FECHA_INICIO");
@@ -302,6 +269,9 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
                         f2.substring(f2.length() - 4)};
                 tabla.addRow(arreglo);
             }
+            
+            stm.close();
+            res.close();
             
             return tabla;
         } catch (SQLException ex) {
@@ -390,4 +360,8 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
     private javax.swing.JTable tblCandidatos;
     private javax.swing.JTable tblVotaciones;
     // End of variables declaration//GEN-END:variables
+
+    AdmVotacion getAdmin() {
+        return adminLogedIn;
+    }
 }

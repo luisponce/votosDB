@@ -14,6 +14,12 @@ import java.sql.Statement;
  */
 public class AdmEafit extends Admin{
 
+    public AdmEafit(int tipo, String correo, String pass, String nombre) {
+        super(tipo, correo, pass, nombre);
+    }
+    
+    
+
     @Override
     public void IngresarAdmin(int id) throws SQLException {
         Connection c = DBOps.getInstance().ConnectDB();

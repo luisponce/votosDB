@@ -17,10 +17,10 @@ import java.util.logging.Logger;
 public class AdmEafit extends Admin{
 
     @Override
-    public void IngresarAdmin() throws SQLException {
+    public void IngresarAdmin(int id) throws SQLException {
         Connection c = DBOps.getInstance().ConnectDB();
         Statement stm = c.createStatement();
-        String sql = "Insert into ADMIN (TIPO) values" + "(" + 1 + ");";
+        String sql = "Insert into ADMIN (TIPO) values" + "(" + id + ", " + 1 + ");";
         stm = c.prepareStatement(sql);
     }
 

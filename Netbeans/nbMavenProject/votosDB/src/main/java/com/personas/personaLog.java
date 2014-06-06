@@ -67,5 +67,4 @@ public class personaLog {
         return ret;
         //return ret;
     }
-    
 }

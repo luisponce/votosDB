@@ -130,6 +130,11 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
         jMenu1.add(jMenuItem1);
 
         jMenuItem2.setText("Eliminar Admin");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
@@ -200,6 +205,43 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        try {
+            String eliminado =  JOptionPane.showInputDialog("Ingrese el nombre del admin a eliminar.");
+            Connection c = DBOps.getInstance().ConnectDB();
+            Statement stm = c.createStatement();
+            String sql = "Select ID from USUARIO where NOMBRE =" + "'" +  eliminado + "'";
+            /*ResultSet res = stm.executeQuery(sql);
+            res.next();
+            String sql2 = "Select TIPO from ADMIN where ID =" + "(Select ID from USUARIO where NOMBRE =" + "'" +  eliminado + "')";
+            ResultSet res2 = stm.executeQuery(sql2);
+            res2.next();
+            String sql3 = "Select * from ADMIN where ID = " + "(Select ID from USUARIO where NOMBRE =" + "'" +  eliminado + "')";
+            ResultSet res3 = stm.executeQuery(sql3);
+            res3.next();
+            if(res.getString("ID").equals("")){
+                JOptionPane.showMessageDialog(null, "No existe ese nombre", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if(res3.getString("ID").equals("")){
+                JOptionPane.showMessageDialog(null, "El usuario ingresado no es un admin.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if(!"0".equals(res2.getString("TIPO"))){
+                JOptionPane.showMessageDialog(null, "Solo puede eliminar admins de su tipo", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            */ //este pedazo no funciona... hay que validar porque sino trataria de eliminar un usuario que no es admin.
+            sql = "Delete from ADMIN where ID = (Select ID from"
+                    + " USUARIO where NOMBRE=" + "'" + eliminado + "'" + ");" +
+                    "Delete from USUARIO where NOMBRE =" + "'" +  eliminado + "'";
+            stm.executeUpdate(sql);
+            stm.close();
+            c.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(FrameAdminVotacion.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "No se pudo eliminar el admin", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments

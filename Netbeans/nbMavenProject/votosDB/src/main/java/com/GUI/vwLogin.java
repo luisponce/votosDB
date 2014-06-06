@@ -5,11 +5,12 @@
  */
 
 package com.GUI;
-
+import com.GUI.FrameAdminEafit;
 import com.personas.personaLog;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,8 +19,6 @@ import javax.swing.JOptionPane;
  */
 public class vwLogin extends javax.swing.JFrame {
     
-    //private final personaLog LogSistema;
-
     /**
      * Creates new form vwLogin
      */
@@ -122,6 +121,7 @@ public class vwLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+        
         String usuario = txtUsuario.getText().trim();
         String clave = txtClave.getText().trim();
         if("".equals(usuario) || "".equals(clave)){
@@ -131,17 +131,24 @@ public class vwLogin extends javax.swing.JFrame {
             try {
                 personaLog LogSistema = new personaLog();
                 String[] ret = LogSistema.ConsultarUsuario(usuario, clave);
-                System.out.println("ret[0]");
-                System.out.println(ret[0]);//ID
-                System.out.println("ret[1]");
-                System.out.println(ret[1]);//tipo ó codigo
-                System.out.println("-------------------");
-                /*if("".equals(res)){
-                   JOptionPane.showMessageDialog(null, "Ingrese todos lod campos "
-                    , "Error ingresando", JOptionPane.ERROR_MESSAGE); 
-                }else{
-                    //redireccionar a la pantalla
-                }*/
+                if(null != ret[1])switch (ret[1]) {
+                    case "x"://uduario no valido
+                        JOptionPane.showMessageDialog(null, "Usuario no valido "
+                                , "ingreso usuario", JOptionPane.ERROR_MESSAGE);
+                        break;
+                    case "0"://abrir admin votos
+                        JOptionPane.showMessageDialog(null, ret[1]
+                    , "Admin votos ingresado.", JOptionPane.ERROR_MESSAGE); 
+                        break;
+                    case "1"://abrir admin eafit
+                        JOptionPane.showMessageDialog(null, ret[1]
+                    , "Admin eafit ingresado", JOptionPane.ERROR_MESSAGE); 
+                        break;
+                    default://abrir estudiante
+                        JOptionPane.showMessageDialog(null, ret[1]
+                    , "estudiante ingresado", JOptionPane.ERROR_MESSAGE); 
+                        break;
+                }
                 
             } catch (SQLException ex) {
                 Logger.getLogger(vwLogin.class.getName()).log(Level.SEVERE, null, ex);

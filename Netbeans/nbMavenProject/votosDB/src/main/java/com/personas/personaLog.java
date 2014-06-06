@@ -23,7 +23,7 @@ public class personaLog {
         Statement stm = c.createStatement();
         String[] ret = new String[2];
         ret[0] = "x"; 
-        ret[1] = "Usuario no valido.";
+        ret[1] = "x";
         //Consultar en la tabla de adminstradores primero
         String sql = "SELECT * FROM USUARIO WHERE CORREO='"+Usuario+"' AND PASSWORD='"+Clave+"'";
         ResultSet res = stm.executeQuery(sql);

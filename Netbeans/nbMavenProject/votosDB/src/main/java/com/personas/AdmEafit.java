@@ -8,8 +8,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -58,7 +56,7 @@ public class AdmEafit extends Admin{
         
         res.close();
         stm.close();
-        c.close();
+        
     }
     
     public void IngresarCarrera(String nombre, Escuela escuela) 
@@ -71,13 +69,13 @@ public class AdmEafit extends Admin{
                 + "WHERE NOMBRE = '" +nombre+ "'";
         ResultSet res = stm.executeQuery(sql);
         if(res.next()){//si hay alguna carrera con ese nombre
-            c.close();
+            
             stm.close();
             throw new Exception("Ya existe una carrera "
                     + "con el nombre " + nombre);
         }
         
-        c.close();
+        
         stm.close();
         
         //obtener el id de la escuela a la que pertenece
@@ -99,11 +97,16 @@ public class AdmEafit extends Admin{
         stm.execute(sql);
         
         stm.close();
-        c.close();
+        
     }
     
-    public void IngresarEstudiante(String nombre, 
-            String correo, String password, String codigo, Carrera carrera) throws SQLException, Exception{
+    public void IngresarEstudiante(Estudiante estudiante) throws SQLException, Exception{
+        String nombre = estudiante.getNombre(); 
+        String correo = estudiante.getCorreo();
+        String password = estudiante.getPassword();
+        String codigo = estudiante.getCodigo();
+        Carrera carrera = estudiante.getCarreras().get(0);
+        
         
         Connection c = DBOps.getInstance().ConnectDB();
         Statement stm = c.createStatement();
@@ -113,12 +116,12 @@ public class AdmEafit extends Admin{
                 + "WHERE CODIGO = '" +codigo+ "'";
         ResultSet res = stm.executeQuery(sql);
         if(res.next()){
-            c.close();
+            
             stm.close();
             throw new Exception("Ya existe un estudiante "
                     + "con el codigo " + codigo);
         }
-        c.close();
+        
         stm.close();
         
         c = DBOps.getInstance().ConnectDB();
@@ -129,12 +132,12 @@ public class AdmEafit extends Admin{
                 + "WHERE CORREO = '" +correo+ "'";
         res = stm.executeQuery(sql);
         if(res.next()){
-            c.close();
+            
             stm.close();
             throw new Exception("Ya existe un usuario "
                     + "con el correo " + correo);
         }
-        c.close();
+        
         stm.close();
         
         
@@ -157,25 +160,18 @@ public class AdmEafit extends Admin{
         stm.execute(sql);
         
         stm.close();
-        c.close();
-    }
-    
-    /**
-     * Retirar las carreras, escuelas y estudiantes a la universidad
-     */
-    public void Retirar(){
         
     }
     
     public void Retirar(Estudiante e) throws SQLException{
-        int identificacion = e.getCodigo();
+        String identificacion = e.getCodigo();
         Connection c = DBOps.getInstance().ConnectDB();
         Statement stm = c.createStatement();
-        String sql = "DELETE FROM ESTUDIANTE where CODIGO=" +
-                identificacion + ";";
+        String sql = "DELETE FROM ESTUDIANTE where CODIGO= '" +
+                identificacion + "';";
         stm.executeUpdate(sql);
         stm.close();
-        c.close();
+        
         
     }
     
@@ -189,6 +185,6 @@ public class AdmEafit extends Admin{
         stm.executeUpdate(sql);
 
         stm.close();
-        c.close();
+        
     }
 }

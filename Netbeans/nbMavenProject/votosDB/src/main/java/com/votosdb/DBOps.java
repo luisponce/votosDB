@@ -9,6 +9,8 @@ package com.votosdb;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,8 +21,11 @@ public class DBOps {
     
     private final String nombreDB = "votos";
     
+    private Connection c;
+    
     private DBOps(){
     }
+    
     public static DBOps getInstance(){
         if(INSTANCE == null){
             INSTANCE = new DBOps();
@@ -33,7 +38,11 @@ public class DBOps {
      * @return El objeto connection.
      */
     public Connection ConnectDB(){
-        return ConnectDB(nombreDB);
+        if(c == null){
+            c=ConnectDB(nombreDB);
+        }
+        
+        return c;
     }
     
     /**
@@ -44,18 +53,18 @@ public class DBOps {
      * @return Un objeto connection.
      */
     public Connection ConnectDB(String DB_name){
-        Connection c = null;
         try {
-          Class.forName("org.sqlite.JDBC");
-          c = DriverManager.getConnection("jdbc:sqlite:" 
-                  + DB_name + ".db");
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:"
+                    + DB_name + ".db");
 
 
         } catch ( ClassNotFoundException | SQLException e ) {
-          System.err.println(e);
-          System.exit(0);
+            System.err.println(e);
+            System.exit(0);
         }
-        
+
+
         return c;
     }
 }

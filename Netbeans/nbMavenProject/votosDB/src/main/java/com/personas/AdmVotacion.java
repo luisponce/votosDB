@@ -2,13 +2,11 @@
 
 package com.personas;
 
-import com.universidad.Carrera;
 import com.votacion.Votacion;
 import com.votosdb.DBOps;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -23,7 +21,7 @@ public class AdmVotacion extends Admin{
         String sql = "Insert into ADMIN (ID, TIPO) values" + "(" + id + ", " + 0 + ");";
         stm.execute(sql);
         stm.close();
-        c.close();
+        
     }
 
     @Override
@@ -69,11 +67,9 @@ public class AdmVotacion extends Admin{
              
     }
     
-    public void RegistrarCandidato(int codigo, ArrayList<Carrera> carreras,
-            String nombre, String correo, String clave){
+    public void RegistrarCandidato(Estudiante candidato){
         
-        Estudiante candidato = new Estudiante(codigo, carreras, true, nombre,
-        correo, clave);
+        
         //Meterlo en la DB.
     }
 }

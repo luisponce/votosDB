@@ -147,7 +147,7 @@ public class CreateDB {
             stm.executeUpdate(sql);
             
             stm.close();
-            c.close();
+            
         } catch (SQLException ex) {
             Logger.getLogger(CreateDB.class.getName()).log(Level.SEVERE, null, ex);
         }

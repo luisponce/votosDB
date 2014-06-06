@@ -121,7 +121,7 @@ public class vwLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-        
+                
         String usuario = txtUsuario.getText().trim();
         String clave = txtClave.getText().trim();
         if("".equals(usuario) || "".equals(clave)){
@@ -133,18 +133,22 @@ public class vwLogin extends javax.swing.JFrame {
                 String[] ret = LogSistema.ConsultarUsuario(usuario, clave);
                 if(null != ret[1])switch (ret[1]) {
                     case "x"://uduario no valido
+                        txtClave.setText("");
                         JOptionPane.showMessageDialog(null, "Usuario no valido "
                                 , "ingreso usuario", JOptionPane.ERROR_MESSAGE);
                         break;
                     case "0"://abrir admin votos
-                        JOptionPane.showMessageDialog(null, ret[1]
-                    , "Admin votos ingresado.", JOptionPane.ERROR_MESSAGE); 
+                        JFrame fav = new FrameAdminVotacion(null);
+                        fav.setVisible(true);
+                        this.setVisible(false);
                         break;
                     case "1"://abrir admin eafit
-                        JOptionPane.showMessageDialog(null, ret[1]
-                    , "Admin eafit ingresado", JOptionPane.ERROR_MESSAGE); 
+                        JFrame fae = new FrameAdminEafit(null);//saca un error
+                        fae.setVisible(true);
+                        this.setVisible(false);
                         break;
                     default://abrir estudiante
+                        //falta frame del voto.
                         JOptionPane.showMessageDialog(null, ret[1]
                     , "estudiante ingresado", JOptionPane.ERROR_MESSAGE); 
                         break;

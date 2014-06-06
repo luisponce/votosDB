@@ -16,7 +16,6 @@ import java.util.ArrayList;
  * clase para representar una carrera de una escuela de la universidad eafit.
  */
 public class Carrera {
-	private ArrayList<Estudiante> estudiantes;
 	private String nombre;
 
     public Carrera(String n) {
@@ -31,12 +30,33 @@ public class Carrera {
         this.nombre = nombre;
     }
 
-    public ArrayList<Estudiante> getEstudiantes() {
+    public ArrayList<Estudiante> getEstudiantes() throws SQLException {
+        ArrayList<Estudiante> estudiantes = new ArrayList<>();
+        
+        Connection c = DBOps.getInstance().ConnectDB();
+        Statement stm = c.createStatement();
+        
+        String sql = "SELECT DISTINCT USUARIO.ID, CORREO, PASSWORD, CODIGO, NOMBRE "
+                + "FROM USUARIO, ESTUDIANTE, ESTUDIANTECARRERA "
+                + "WHERE USUARIO.ID = ESTUDIANTE.ID "
+                + "AND ESTUDIANTE = ESTUDIANTE.ID AND CARRERA = "+getId();
+        
+        ResultSet res = stm.executeQuery(sql);
+        
+        while(res.next()){
+            String codigo = res.getString("CODIGO");
+            String nombre = res.getString("NOMBRE");
+            String correo = res.getString("CORREO");
+            String password = res.getString("PASSWORD");
+            int id = res.getInt("ID");
+            
+            ArrayList<Carrera> carreras = Estudiante.getCarreras(id);
+            
+            Estudiante cur = new Estudiante(codigo, carreras, nombre, correo, password);
+            estudiantes.add(cur);
+        }
+        
         return estudiantes;
-    }
-    
-    public void IngresarEstudiante(Estudiante e){
-        estudiantes.add(e);
     }
     
     public void EliminarEstudiante(){
@@ -59,7 +79,7 @@ public class Carrera {
         
         int id = res.getInt(1);
         
-        c.close();
+        
         stm.close();
         
         return id;

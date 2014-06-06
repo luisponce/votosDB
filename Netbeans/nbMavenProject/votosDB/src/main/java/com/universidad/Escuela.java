@@ -41,7 +41,6 @@ public class Escuela {
         int id = res.getInt(1);
         
         stm.close();
-        c.close();
         
         return id;
     }

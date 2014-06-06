@@ -197,7 +197,6 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
                     sql = "Insert into ADMIN (ID, TIPO) values (last_insert_rowid(), " + 0 + ")";
                     stm.execute(sql);
                     stm.close();
-                    c.close();
                     JOptionPane.showMessageDialog(null, "Admin de votacion"
                         + " ingresado exitosamente");
                 
@@ -240,7 +239,6 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
                     "Delete from USUARIO where NOMBRE =" + "'" +  eliminado + "'";
             stm.executeUpdate(sql);
             stm.close();
-            c.close();
         } catch (SQLException ex) {
             Logger.getLogger(FrameAdminVotacion.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "No se pudo eliminar el admin", "Error", JOptionPane.ERROR_MESSAGE);
@@ -358,7 +356,6 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
                 tabla.addRow(arreglo);
             }
             stm.close();
-            c.close();
             return tabla;
         } catch (SQLException ex) {
             Logger.getLogger(FrameAdminVotacion.class.getName()).log(Level.SEVERE, null, ex);

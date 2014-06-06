@@ -63,7 +63,7 @@ public class personaLog {
         
         res.close();
         stm.close();
-        c.close();
+        
         return ret;
         //return ret;
     }

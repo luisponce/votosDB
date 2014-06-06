@@ -21,7 +21,7 @@ public class AdmVotacion extends Admin{
         String sql = "Insert into ADMIN (ID, TIPO) values" + "(" + id + ", " + 0 + ");";
         stm.execute(sql);
         stm.close();
-        c.close();
+        
     }
 
     @Override

@@ -279,6 +279,7 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
             public void run() {
                 AdmVotacion admin = new AdmVotacion(); //para pruebas, provisional!!!
                 new FrameAdminVotacion(admin).setVisible(true);
+                
             }
         });
     }

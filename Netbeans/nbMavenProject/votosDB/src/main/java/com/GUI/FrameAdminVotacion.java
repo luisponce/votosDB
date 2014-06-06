@@ -179,14 +179,13 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
                     return;
                 }
                 
-                
-                    adminLogedIn.IngresarAdmin();
-                
                     Connection c = DBOps.getInstance().ConnectDB();
                     Statement stm = c.createStatement();
                     String sql = "Insert into USUARIO (NOMBRE, CORREO, PASSWORD) "
                         + "values ('" + nombre + "', '" 
                         +  correo + "', '" + password + "' );";
+                    stm.execute(sql);
+                    sql = "Insert into ADMIN (ID, TIPO) values (last_insert_rowid(), " + 0 + ")";
                     stm.execute(sql);
                     stm.close();
                     c.close();

@@ -7,6 +7,7 @@
 package com.GUI;
 
 import com.personas.AdmEafit;
+import com.personas.Estudiante;
 import com.universidad.Carrera;
 import com.universidad.Escuela;
 import com.universidad.UniversidadEafit;
@@ -67,7 +68,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         pnlEstudiantes = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableEstudiantes = new javax.swing.JTable();
         jPanel10 = new javax.swing.JPanel();
         btnAgregarEstudiante = new javax.swing.JButton();
         btnRetirarEstudiante = new javax.swing.JButton();
@@ -192,18 +193,8 @@ public class FrameAdminEafit extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Carreras", pnlCarreras);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Nombre", "Correo", "Codigo"
-            }
-        ));
-        jScrollPane3.setViewportView(jTable1);
+        tableEstudiantes.setModel(ConstruirTablaEstudiantes());
+        jScrollPane3.setViewportView(tableEstudiantes);
 
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder("Operaciones"));
 
@@ -412,9 +403,10 @@ public class FrameAdminEafit extends javax.swing.JFrame {
                 }
                 
                 Carrera carrera = new Carrera(selectedValue.toString());
+                Estudiante estIngresado = new Estudiante(codigo, carrera, nombre, correo, password);
+                adminLogedIn.IngresarEstudiante(estIngresado);
                 
-                adminLogedIn.IngresarEstudiante(nombre, correo, password, 
-                        codigo, carrera);
+                UpdateTablaEstudiantes();
                 
                 JOptionPane.showMessageDialog(null, "Estudiante ingresado exitosamente");
             } catch (Exception ex) {
@@ -446,7 +438,8 @@ public class FrameAdminEafit extends javax.swing.JFrame {
     }//GEN-LAST:event_EscuelaActionPerformed
 
     private void btnRetirarEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetirarEstudianteActionPerformed
-        // TODO add your handling code here:
+        
+        
     }//GEN-LAST:event_btnRetirarEstudianteActionPerformed
 
     /**
@@ -568,7 +561,6 @@ public class FrameAdminEafit extends javax.swing.JFrame {
                     + "escuela \"" +nombreOld+ "\" a \"" +nombre+ "\"");
             
             stm.close();
-            c.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex, "Error Modificando Escuela", JOptionPane.ERROR_MESSAGE);
         }
@@ -583,8 +575,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
     
     /**
      * Obtener la tabla con la informacion de todas las carreras
-     * @return El tableModel con las carreras en la BDs
-     * @throws SQLException 
+     * @return El tableModel con las carreras en la BDs 
      */
     public TableModel ConstruirTablaCarreras() {
         try {
@@ -615,6 +606,40 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         tableCarreras.setModel(ConstruirTablaCarreras());
     }
     
+    /**
+     * Obtener la tabla con la informacion de todas las carreras
+     * @return El tableModel con las carreras en la BDs 
+     */
+    public TableModel ConstruirTablaEstudiantes() {
+        try {
+            Object[] columnNames = {"Nombre", "Correo", "Codigo"};
+            DefaultTableModel table = new DefaultTableModel(columnNames, 0);
+            
+            ArrayList<Estudiante> estudiantes;
+            estudiantes = UniversidadEafit.getINSTANCE().getEstudiantes();
+            
+            for (Estudiante estudiante : estudiantes) {
+                String nombre = estudiante.getNombre();
+                String correo = estudiante.getCorreo();
+                String codigo = estudiante.getCodigo();
+                Object[] arr = {nombre, correo, codigo};
+                table.addRow(arr);
+            }
+            
+            return table;
+        } catch (SQLException ex) {
+            Logger.getLogger(FrameAdminEafit.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error con la base de datos", "Error", JOptionPane.ERROR_MESSAGE);
+            return new DefaultTableModel();
+        }
+    }
+    
+    public void UpdateTablaEstudiantes(){
+        tableEstudiantes.setModel(ConstruirTablaEstudiantes());
+    }
+    
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AgregarEscuela;
     private javax.swing.JButton EliminarEscuela;
@@ -633,12 +658,12 @@ public class FrameAdminEafit extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JList listEscuelas;
     private javax.swing.JPanel pnlCarreras;
     private javax.swing.JPanel pnlEscuelas;
     private javax.swing.JPanel pnlEstudiantes;
     private javax.swing.JTable tableCarreras;
+    private javax.swing.JTable tableEstudiantes;
     // End of variables declaration//GEN-END:variables
 
 }

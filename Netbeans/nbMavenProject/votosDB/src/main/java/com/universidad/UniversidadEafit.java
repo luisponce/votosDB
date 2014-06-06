@@ -1,6 +1,7 @@
 package com.universidad;
 
 
+import com.personas.Estudiante;
 import com.votacion.Votacion;
 import com.votosdb.DBOps;
 import java.sql.Connection;
@@ -53,7 +54,6 @@ public class UniversidadEafit {
         
         result.close();
         stm.close();
-        c.close();
         
         return listEscuelas;
     }
@@ -71,5 +71,16 @@ public class UniversidadEafit {
         }
         
         return listaCarreras;
+    }
+
+    public ArrayList<Estudiante> getEstudiantes() throws SQLException {
+        ArrayList<Carrera> listaCarreras = getCarreras();
+        ArrayList<Estudiante> listaEstudiantes = new ArrayList<>();
+        
+        for (Carrera carrera : listaCarreras) {
+            listaEstudiantes.addAll(carrera.getEstudiantes());
+        }
+        
+        return listaEstudiantes;
     }
 }

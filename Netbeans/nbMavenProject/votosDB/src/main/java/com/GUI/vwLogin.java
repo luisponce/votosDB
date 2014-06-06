@@ -133,6 +133,7 @@ public class vwLogin extends javax.swing.JFrame {
                 String[] ret = LogSistema.ConsultarUsuario(usuario, clave);
                 if(null != ret[1])switch (ret[1]) {
                     case "x"://uduario no valido
+                        txtClave.setText("");
                         JOptionPane.showMessageDialog(null, "Usuario no valido "
                                 , "ingreso usuario", JOptionPane.ERROR_MESSAGE);
                         break;

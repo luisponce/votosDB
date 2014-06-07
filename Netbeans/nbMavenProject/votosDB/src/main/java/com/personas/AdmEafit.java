@@ -193,4 +193,27 @@ public class AdmEafit extends Admin{
         stm.close();
         
     }
+    
+    public void RetirarEstudiante(Estudiante e) throws SQLException{
+        RetirarEstudiante(e.getId());
+    }
+    
+    public void RetirarEstudiante(int id) throws SQLException{
+        Connection c = DBOps.getInstance().ConnectDB();
+        Statement stm = c.createStatement();
+        
+        String sql = "DELETE FROM USUARIO WHERE ID = "+id;
+        
+        stm.executeUpdate(sql);
+        
+        sql = "DELETE FROM ESTUDIANTE WHERE ID = "+id;
+        
+        stm.executeUpdate(sql);
+        
+        sql = "DELETE FROM ESTUDIANTECARRERA WHERE ESTUDIANTE = "+id;
+        
+        stm.executeUpdate(sql);
+        
+        stm.close();
+    }
 }

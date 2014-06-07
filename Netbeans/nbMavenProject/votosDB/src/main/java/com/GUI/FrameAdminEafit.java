@@ -12,6 +12,7 @@ import com.universidad.Carrera;
 import com.universidad.Escuela;
 import com.universidad.UniversidadEafit;
 import com.votosdb.DBOps;
+import java.awt.Graphics;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -438,46 +439,22 @@ public class FrameAdminEafit extends javax.swing.JFrame {
     }//GEN-LAST:event_EscuelaActionPerformed
 
     private void btnRetirarEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetirarEstudianteActionPerformed
+        Boolean selected = false;
+        for (int i = 0; !selected && i < tableEstudiantes.getRowCount(); i++) {
+            selected = tableEstudiantes.isRowSelected(i);
+        }
         
+        if(!selected){
+            JOptionPane.showMessageDialog(null, "No hay estudiante seleccionado. "
+                    + "Debe seleccionar una estudiante para eliminarlo.", 
+                    "Error Eliminando Estudiante", JOptionPane.ERROR_MESSAGE);
+        } else {
+            EliminarEstudiante(tableEstudiantes.getSelectedRow());
+        }
         
     }//GEN-LAST:event_btnRetirarEstudianteActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameAdminEafit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameAdminEafit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameAdminEafit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameAdminEafit.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                AdmEafit admEafit = new AdmEafit();//for testing
-                
-                new FrameAdminEafit(admEafit).setVisible(true);
-            }
-        });
-    }
+    
     
     /**
      * Obtiene la lista de escuelas que estan en la BD y retorna un arreglo con 
@@ -527,7 +504,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         try {
             adminLogedIn.RetirarEscuela(new Escuela(name));
             
-            ActualizarListaEscuelas();
+            update(getGraphics());
             
             JOptionPane.showMessageDialog(null, "Se elimino la escuela \"" +name+ "\".");
         } catch (SQLException ex) {
@@ -555,7 +532,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
             
             stm.executeUpdate(sql);
             
-            ActualizarListaEscuelas();
+            update(getGraphics());
             
             JOptionPane.showMessageDialog(null, "Se cambio el nombre de la "
                     + "escuela \"" +nombreOld+ "\" a \"" +nombre+ "\"");
@@ -638,6 +615,31 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         tableEstudiantes.setModel(ConstruirTablaEstudiantes());
     }
     
+    private void EliminarEstudiante(int selectedRow) {
+        String codigo = (String) tableEstudiantes.getModel().getValueAt(selectedRow, 2);
+        
+        try{
+            Estudiante estudiante = Estudiante.getEstudiante(codigo);
+            adminLogedIn.RetirarEstudiante(estudiante);
+            
+            update(this.getGraphics());
+            
+            JOptionPane.showMessageDialog(null, "Se elimino el estudiante con codigo " +codigo+ ".");
+        } catch (SQLException ex) {
+            Logger.getLogger(FrameAdminEafit.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error eliminando estudiante", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    @Override
+    public void update(Graphics g) {
+        super.update(g); //To change body of generated methods, choose Tools | Templates.
+        UpdateTablaEstudiantes();
+        UpdateTablaCarreras();
+        ActualizarListaEscuelas();
+    }
+    
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -665,5 +667,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
     private javax.swing.JTable tableCarreras;
     private javax.swing.JTable tableEstudiantes;
     // End of variables declaration//GEN-END:variables
+
+    
 
 }

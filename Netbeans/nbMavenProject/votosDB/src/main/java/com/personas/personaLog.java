@@ -21,7 +21,7 @@ public class personaLog {
     public String[] ConsultarUsuario(String Usuario, String Clave) throws SQLException{
         Connection c = DBOps.getInstance().ConnectDB();
         Statement stm = c.createStatement();
-        String[] ret = new String[2];
+        String[] ret = new String[5];
         ret[0] = "x"; 
         ret[1] = "x";
         //Consultar en la tabla de adminstradores primero

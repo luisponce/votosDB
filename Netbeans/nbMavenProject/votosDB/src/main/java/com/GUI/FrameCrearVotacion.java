@@ -149,7 +149,7 @@ public class FrameCrearVotacion extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            AdmVotacion admin = new AdmVotacion();
+            
             Date fechaIni = new Date(txtInicio.getText());
             Date fechaFin = new Date(txtFin.getText());
             String nombre = txtNombre.getText();
@@ -158,7 +158,7 @@ public class FrameCrearVotacion extends javax.swing.JFrame {
                         + " vacio", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            admin.IniciarVotacion(fechaIni, fechaFin, txtNombre.getText());
+            padre.getAdmin().IniciarVotacion(fechaIni, fechaFin, txtNombre.getText());
             padre.updateTablaVotaciones();
             setVisible(false);
             dispose();

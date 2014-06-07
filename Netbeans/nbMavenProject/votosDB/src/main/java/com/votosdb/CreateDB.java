@@ -114,9 +114,8 @@ public class CreateDB {
             //crear admin votos
             //  en usuario
 //            int IDvotos = DBOps.getInstance().getNextID();
-            String correoAdmVotos = "adminVotos@eafit.edu.co";
             sql = "INSERT INTO USUARIO (ID, NOMBRE, CORREO, PASSWORD) "
-                    + "VALUES (0, 'default', 'adminVotos@eafit.edu.co', 'eafit123')";
+                    + "VALUES (0, 'default', 'adminvotos@eafit.edu.co', 'eafit123')";
             
             stm.executeUpdate(sql);
             
@@ -126,23 +125,16 @@ public class CreateDB {
             
             stm.executeUpdate(sql);
             
-            System.out.println("Se creo adminVotos con correo: " +
-                    correoAdmVotos+ " y password: " + passwordDefault);
-            
             //crear admin eafit
             //  en usuario
-            String correoAdmEafit = "adminEafit@eafit.edu.co";
             sql = "INSERT INTO USUARIO (ID, NOMBRE, CORREO, PASSWORD)"
-                    + "VALUES (1, 'default', 'adminEafit@eafit.edu.co', 'eafit123'); ";
+                    + "VALUES (1, 'default', 'admineafit@eafit.edu.co', 'eafit123'); ";
             
             stm.executeUpdate(sql);
             
             //  en admin
             sql = "INSERT INTO ADMIN (ID, TIPO)"
                     + "VALUES (1, 1)";
-            
-            System.out.println("Se creo adminEAFIT con correo: " +
-                    correoAdmEafit+ " y password: " + passwordDefault);
             
             stm.executeUpdate(sql);
             

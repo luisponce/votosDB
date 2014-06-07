@@ -8,6 +8,8 @@ public abstract class Persona {
 	protected String nombre;
 	protected String correo;
 	protected String password;
+    
+    
 
     public String getNombre() {
         return nombre;

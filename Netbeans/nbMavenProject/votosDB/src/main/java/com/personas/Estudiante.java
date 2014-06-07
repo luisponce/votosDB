@@ -39,6 +39,42 @@ public class Estudiante extends Persona {
         
         return carreras;
     }
+
+    public static Estudiante getEstudiante(String codigo) throws SQLException {
+        Connection c = DBOps.getInstance().ConnectDB();
+        Statement stm = c.createStatement();
+        
+        String sql = "SELECT DISTINCT NOMBRE, CORREO, PASSWORD, ESTUDIANTE.ID "
+                + "FROM ESTUDIANTE, USUARIO "
+                + "WHERE ESTUDIANTE.ID = USUARIO.ID "
+                + "AND CODIGO = '"+codigo+"' ";
+        
+        ResultSet res = stm.executeQuery(sql);
+        
+        String nombre = res.getString(1);
+        String correo = res.getString(2);
+        String pas = res.getString(3);
+        int id = res.getInt(4);
+        
+        res.close();
+        
+        //obtener las carreras a las que pertenece el estudiante
+        sql = "SELECT NOMBRE FROM CARRERA, ESTUDIANTECARRERA "
+                + "WHERE ID = CARRERA AND ESTUDIANTE = "+id;
+        
+        ArrayList<Carrera> carreras = new ArrayList<>();
+        
+        ResultSet res2 = stm.executeQuery(sql);
+        
+        while(res2.next()){
+            Carrera carrera = new Carrera(res2.getString(1));
+            carreras.add(carrera);
+        }
+        
+        Estudiante estudiante = new Estudiante(codigo, carreras, nombre, correo, pas);
+        
+        return estudiante;
+    }
     
     
 	private String codigo;
@@ -79,5 +115,16 @@ public class Estudiante extends Persona {
         this.nombre = nombre;
         this.correo = correo;
         this.password = clave;
+    }
+
+    public int getId() throws SQLException {
+        Connection c = DBOps.getInstance().ConnectDB();
+        Statement stm = c.createStatement();
+        
+        String sql = "SELECT ID FROM ESTUDIANTE WHERE CODIGO = '"+codigo+"'";
+        
+        ResultSet res = stm.executeQuery(sql);
+        
+        return res.getInt(1);
     }
 }

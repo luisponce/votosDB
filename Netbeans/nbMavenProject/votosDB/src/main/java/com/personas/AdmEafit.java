@@ -14,6 +14,12 @@ import java.sql.Statement;
  */
 public class AdmEafit extends Admin{
 
+    public AdmEafit(int tipo, String correo, String pass, String nombre) {
+        super(tipo, correo, pass, nombre);
+    }
+    
+    
+
     @Override
     public void IngresarAdmin(int id) throws SQLException {
         Connection c = DBOps.getInstance().ConnectDB();
@@ -186,5 +192,28 @@ public class AdmEafit extends Admin{
 
         stm.close();
         
+    }
+    
+    public void RetirarEstudiante(Estudiante e) throws SQLException{
+        RetirarEstudiante(e.getId());
+    }
+    
+    public void RetirarEstudiante(int id) throws SQLException{
+        Connection c = DBOps.getInstance().ConnectDB();
+        Statement stm = c.createStatement();
+        
+        String sql = "DELETE FROM USUARIO WHERE ID = "+id;
+        
+        stm.executeUpdate(sql);
+        
+        sql = "DELETE FROM ESTUDIANTE WHERE ID = "+id;
+        
+        stm.executeUpdate(sql);
+        
+        sql = "DELETE FROM ESTUDIANTECARRERA WHERE ESTUDIANTE = "+id;
+        
+        stm.executeUpdate(sql);
+        
+        stm.close();
     }
 }

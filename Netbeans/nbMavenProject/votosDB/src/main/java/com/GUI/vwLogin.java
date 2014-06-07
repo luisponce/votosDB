@@ -6,6 +6,9 @@
 
 package com.GUI;
 import com.GUI.FrameAdminEafit;
+import com.personas.AdmEafit;
+import com.personas.AdmVotacion;
+import com.personas.Admin;
 import com.personas.personaLog;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -118,6 +121,7 @@ public class vwLogin extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
@@ -138,12 +142,14 @@ public class vwLogin extends javax.swing.JFrame {
                                 , "ingreso usuario", JOptionPane.ERROR_MESSAGE);
                         break;
                     case "0"://abrir admin votos
-                        JFrame fav = new FrameAdminVotacion(null);
+                        AdmVotacion admV = new AdmVotacion(0, ret[3], ret[4], ret[2]);
+                        JFrame fav = new FrameAdminVotacion(admV);
                         fav.setVisible(true);
                         this.setVisible(false);
                         break;
                     case "1"://abrir admin eafit
-                        JFrame fae = new FrameAdminEafit(null);//saca un error
+                        AdmEafit admE = new AdmEafit(1, ret[3], ret[4], ret[2]);
+                        JFrame fae = new FrameAdminEafit(admE);//saca un error
                         fae.setVisible(true);
                         this.setVisible(false);
                         break;

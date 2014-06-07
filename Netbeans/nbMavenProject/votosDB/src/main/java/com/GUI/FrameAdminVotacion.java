@@ -245,6 +245,7 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+
     /**
      * @param args the command line arguments
      */
@@ -275,7 +276,7 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                AdmVotacion admin = new AdmVotacion(); //para pruebas, provisional!!!
+                AdmVotacion admin = new AdmVotacion(0, "adminVotos@eafit.edu.co", "eafit123", "default"); //para pruebas, provisional!!!
                 new FrameAdminVotacion(admin).setVisible(true);
                 
             }
@@ -294,6 +295,7 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
             Statement stm = c.createStatement();
             String sql = "Select * from VOTACION";
             ResultSet res = stm.executeQuery(sql);
+            
             while(res.next()){
                 String nombre = res.getString("NOMBRE");
                 String f1 = res.getString("FECHA_INICIO");
@@ -303,6 +305,9 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
                         f2.substring(f2.length() - 4)};
                 tabla.addRow(arreglo);
             }
+            
+            stm.close();
+            res.close();
             
             return tabla;
         } catch (SQLException ex) {
@@ -391,4 +396,8 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
     private javax.swing.JTable tblCandidatos;
     private javax.swing.JTable tblVotaciones;
     // End of variables declaration//GEN-END:variables
+
+    AdmVotacion getAdmin() {
+        return adminLogedIn;
+    }
 }

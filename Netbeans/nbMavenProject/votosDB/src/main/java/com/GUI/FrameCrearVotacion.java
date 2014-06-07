@@ -60,7 +60,7 @@ public class FrameCrearVotacion extends javax.swing.JFrame {
 
         jLabel3.setText("Fecha de inicio:");
 
-        txtInicio.setText("dd/mm/yyyy");
+        txtInicio.setText("mm/dd/yyyy");
         txtInicio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtInicioActionPerformed(evt);
@@ -69,7 +69,7 @@ public class FrameCrearVotacion extends javax.swing.JFrame {
 
         jLabel7.setText("Fecha de finalizacion:");
 
-        txtFin.setText("dd/mm/yyyy");
+        txtFin.setText("mm/dd/yyyy");
         txtFin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtFinActionPerformed(evt);

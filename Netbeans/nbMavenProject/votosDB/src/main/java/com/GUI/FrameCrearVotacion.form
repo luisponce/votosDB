@@ -110,7 +110,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtInicio">
       <Properties>
-        <Property name="text" type="java.lang.String" value="dd/mm/yyyy"/>
+        <Property name="text" type="java.lang.String" value="mm/dd/yyyy"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtInicioActionPerformed"/>
@@ -123,7 +123,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtFin">
       <Properties>
-        <Property name="text" type="java.lang.String" value="dd/mm/yyyy"/>
+        <Property name="text" type="java.lang.String" value="mm/dd/yyyy"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtFinActionPerformed"/>

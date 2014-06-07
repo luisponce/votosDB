@@ -293,7 +293,7 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
             //meter todas las votaciones en la tabla.
             Connection c = DBOps.getInstance().ConnectDB();
             Statement stm = c.createStatement();
-            String sql = "Select * from VOTACION";
+            String sql = "SELECT * FROM VOTACION;";
             ResultSet res = stm.executeQuery(sql);
             
             while(res.next()){
@@ -313,7 +313,7 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(FrameAdminVotacion.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Error obteniendo informacion"
-                    + " de votaciones", null, JOptionPane.ERROR_MESSAGE);
+                    + " de votaciones", "Error", JOptionPane.ERROR_MESSAGE);
             return new DefaultTableModel();
         }
         

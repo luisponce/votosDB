@@ -67,7 +67,7 @@ public class AdmVotacion extends Admin{
                     ", "+ "'" + nuevaVotacion.getFechaFin()+ "'" + ")";
             stmt = con.createStatement();
             
-            stmt.execute(sql);
+            stmt.executeUpdate(sql);
             stmt.close();
             con.close();
              

@@ -150,14 +150,30 @@ public class FrameCrearVotacion extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             
-            Date fechaIni = new Date(txtInicio.getText());
-            Date fechaFin = new Date(txtFin.getText());
+            
             String nombre = txtNombre.getText();
             if("".equals(nombre) || nombre == null){
                 JOptionPane.showMessageDialog(null, "El nombre no puede ser"
                         + " vacio", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            try{
+                validarFecha(txtInicio.getText());
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, "Formato de fecha de inicio invalido.", "Error", JOptionPane.ERROR_MESSAGE);
+                setTextFechaInicio();
+                return;
+            }
+            
+            try{
+                validarFecha(txtFin.getText());
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, "Formato de fecha de finalizacion invalido.", "Error", JOptionPane.ERROR_MESSAGE);
+                setTextFechaFin();
+                return;
+            }
+            Date fechaIni = new Date(txtInicio.getText());
+            Date fechaFin = new Date(txtFin.getText());
             padre.getAdmin().IniciarVotacion(fechaIni, fechaFin, txtNombre.getText());
             padre.updateTablaVotaciones();
             setVisible(false);
@@ -172,8 +188,63 @@ public class FrameCrearVotacion extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtFinActionPerformed
 
+    public boolean isNumeric(String str)  
+{  
+  try  
+  {  
+    double d = Double.parseDouble(str);  
+  }  
+  catch(NumberFormatException nfe)  
+  {  
+    return false;  
+  }  
+  return true;  
+}
     
-
+    public void validarFecha(String fecha) throws Exception{
+        
+        if(fecha.length() < 10){
+            throw new Exception("Formato de fecha invalido.");
+        }
+        
+        String dia, mes, anio;
+        String primerSlash, segundoSlash;
+        mes = fecha.substring(0, 2);
+        dia = fecha.substring(3, 5);
+        anio = fecha.substring(6);
+        int ndia, nmes, nanio;
+        ndia = Integer.parseInt(dia);
+        nmes = Integer.parseInt(mes);
+        nanio = Integer.parseInt(anio);
+        primerSlash = fecha.substring(2, 3);
+        segundoSlash = fecha.substring(5, 6);
+        if(!isNumeric(mes)){
+            throw new Exception("Formato de fecha invalido.");
+        }else if(!isNumeric(dia)){
+            throw new Exception("Formato de fecha invalido.");
+        }else if(!isNumeric(anio)){
+            throw new Exception("Formato de fecha invalido.");
+        }else if(!primerSlash.equals("/")){
+            throw new Exception("Formato de fecha invalido.");
+        }else if(!segundoSlash.equals("/")){
+            throw new Exception("Formato de fecha invalido.");
+        }else if(ndia > 31 || ndia < 0){
+            throw new Exception("Formato de fecha invalido.");
+        }else if(nmes > 12 || nmes < 0){
+            throw new Exception("Formato de fecha invalido.");
+        }else if(nanio > 9999 || nanio < 2013){
+            throw new Exception("Formato de fecha invalido.");
+        }
+    }
+    
+    public void setTextFechaFin(){
+        txtFin.setText("mm/dd/yyyy");
+    }
+    
+    public void setTextFechaInicio(){
+        txtInicio.setText("mm/dd/yyyy");
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

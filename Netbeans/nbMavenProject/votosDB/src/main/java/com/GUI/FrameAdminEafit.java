@@ -73,6 +73,11 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         jPanel10 = new javax.swing.JPanel();
         btnAgregarEstudiante = new javax.swing.JButton();
         btnRetirarEstudiante = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AdminEafit");
@@ -146,7 +151,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlEscuelasLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -189,7 +194,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         pnlCarrerasLayout.setVerticalGroup(
             pnlCarrerasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
+            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Carreras", pnlCarreras);
@@ -230,7 +235,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE))
+                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -259,6 +264,31 @@ public class FrameAdminEafit extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jTabbedPane1)
         );
+
+        jMenu1.setText("Opciones");
+
+        jMenuItem1.setText("Ingresar  Admin");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("Retirar Admin");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
+        jMenuItem3.setText("LogOut");
+        jMenu1.add(jMenuItem3);
+
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -453,6 +483,81 @@ public class FrameAdminEafit extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnRetirarEstudianteActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        try {
+            String eliminado =  JOptionPane.showInputDialog("Ingrese el nombre del admin a eliminar.");
+            Connection c = DBOps.getInstance().ConnectDB();
+            Statement stm = c.createStatement();
+            String sql = "Select ID from USUARIO where NOMBRE =" + "'" +  eliminado + "'";
+            /*ResultSet res = stm.executeQuery(sql);
+            res.next();
+            String sql2 = "Select TIPO from ADMIN where ID =" + "(Select ID from USUARIO where NOMBRE =" + "'" +  eliminado + "')";
+            ResultSet res2 = stm.executeQuery(sql2);
+            res2.next();
+            String sql3 = "Select * from ADMIN where ID = " + "(Select ID from USUARIO where NOMBRE =" + "'" +  eliminado + "')";
+            ResultSet res3 = stm.executeQuery(sql3);
+            res3.next();
+            if(res.getString("ID").equals("")){
+                JOptionPane.showMessageDialog(null, "No existe ese nombre", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if(res3.getString("ID").equals("")){
+                JOptionPane.showMessageDialog(null, "El usuario ingresado no es un admin.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }else if(!"1".equals(res2.getString("TIPO"))){
+                JOptionPane.showMessageDialog(null, "Solo puede eliminar admins de su tipo", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            */ //este pedazo no funciona... hay que validar porque sino trataria de eliminar un usuario que no es admin.
+            sql = "Delete from ADMIN where ID = (Select ID from"
+                    + " USUARIO where NOMBRE=" + "'" + eliminado + "'" + ");" +
+                    "Delete from USUARIO where NOMBRE =" + "'" +  eliminado + "'";
+            stm.executeUpdate(sql);
+            stm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(FrameAdminVotacion.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "No se pudo eliminar el admin", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+       RegistroUsaurio registro = new RegistroUsaurio(this, true);
+        registro.setVisible(true);
+        
+        while(registro.getReturnStatus() == -1) ;//esperar a que solucione el modal
+        
+        if(registro.getReturnStatus() == 1){
+            try {
+                
+                String nombre = registro.getNombre();
+                String correo = registro.getCorreo();
+                String password = registro.getPassword();
+                registro.clearPassword();
+                if(nombre.equals("")){
+                    JOptionPane.showMessageDialog(null, "El nombre no puede ser vacio", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                    Connection c = DBOps.getInstance().ConnectDB();
+                    Statement stm = c.createStatement();
+                    String sql = "Insert into USUARIO (NOMBRE, CORREO, PASSWORD) "
+                        + "values ('" + nombre + "', '" 
+                        +  correo + "', '" + password + "' );";
+                    stm.execute(sql);
+                    sql = "Insert into ADMIN (ID, TIPO) values (last_insert_rowid(), " + 1 + ")";
+                    stm.execute(sql);
+                    stm.close();
+                    JOptionPane.showMessageDialog(null, "Admin de EAFIT"
+                        + " ingresado exitosamente");
+                
+                
+            } catch (Exception ex) {
+                Logger.getLogger(FrameAdminEafit.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Error ingresando "
+                        + "Admin de EAFIT", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } 
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     
     
@@ -649,6 +754,11 @@ public class FrameAdminEafit extends javax.swing.JFrame {
     private javax.swing.JButton btnAgregarEstudiante;
     private javax.swing.JButton btnRetirarEstudiante;
     private javax.swing.JButton butAgregarCarrera;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;

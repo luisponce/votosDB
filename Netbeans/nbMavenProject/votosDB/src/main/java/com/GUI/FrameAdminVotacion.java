@@ -307,7 +307,7 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
             }
             
             stm.close();
-            res.close();
+            //res.close();
             
             return tabla;
         } catch (SQLException ex) {

@@ -69,7 +69,6 @@ public class AdmVotacion extends Admin{
             
             stmt.executeUpdate(sql);
             stmt.close();
-            con.close();
              
     }
     

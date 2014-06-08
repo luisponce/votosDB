@@ -486,10 +486,10 @@ public class FrameAdminEafit extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         try {
-            String eliminado =  JOptionPane.showInputDialog("Ingrese el nombre del admin a eliminar.");
+            String eliminado =  JOptionPane.showInputDialog("Ingrese el correo del admin a eliminar.");
             Connection c = DBOps.getInstance().ConnectDB();
             Statement stm = c.createStatement();
-            String sql = "Select ID from USUARIO where NOMBRE =" + "'" +  eliminado + "'";
+            String sql = "Select ID from USUARIO where CORREO =" + "'" +  eliminado + "'";
             /*ResultSet res = stm.executeQuery(sql);
             res.next();
             String sql2 = "Select TIPO from ADMIN where ID =" + "(Select ID from USUARIO where NOMBRE =" + "'" +  eliminado + "')";
@@ -510,8 +510,8 @@ public class FrameAdminEafit extends javax.swing.JFrame {
             }
             */ //este pedazo no funciona... hay que validar porque sino trataria de eliminar un usuario que no es admin.
             sql = "Delete from ADMIN where ID = (Select ID from"
-                    + " USUARIO where NOMBRE=" + "'" + eliminado + "'" + ");" +
-                    "Delete from USUARIO where NOMBRE =" + "'" +  eliminado + "'";
+                    + " USUARIO where CORREO=" + "'" + eliminado + "'" + ");" +
+                    "Delete from USUARIO where CORREO =" + "'" +  eliminado + "'";
             stm.executeUpdate(sql);
             stm.close();
         } catch (SQLException ex) {

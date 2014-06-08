@@ -216,6 +216,7 @@ public class FrameCrearVotacion extends javax.swing.JFrame {
             padre.updateTablaVotaciones();
             setVisible(false);
             dispose();
+            stm.close();
         } catch (Exception ex) {
             Logger.getLogger(FrameCrearVotacion.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

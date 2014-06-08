@@ -561,7 +561,38 @@ public class FrameAdminEafit extends javax.swing.JFrame {
                 
                     Connection c = DBOps.getInstance().ConnectDB();
                     Statement stm = c.createStatement();
-                    String sql = "Insert into USUARIO (NOMBRE, CORREO, PASSWORD) "
+                    
+                    String sql = "Select CORREO from USUARIO";
+                    ResultSet res = stm.executeQuery(sql);
+                    ArrayList<String> arr = new ArrayList<>();
+                    boolean vacio = false;
+                    res.next();
+                    try{
+                        if(res.getString(1).equals("")){
+                            vacio = false;
+                        }else{
+                            vacio = false;
+                        }
+                    }catch (Exception e){
+                        vacio = true;
+                    }
+            
+            res = stm.executeQuery(sql);
+            
+            if(!vacio){
+                while(res.next()){
+                    arr.add(res.getString(1));
+                }
+                for (String arr1 : arr) {
+                    if(arr1.equals(correo)){
+                        JOptionPane.showMessageDialog(null, "El correo ya esta en uso", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+            }
+                    
+                    
+                    sql = "Insert into USUARIO (NOMBRE, CORREO, PASSWORD) "
                         + "values ('" + nombre + "', '" 
                         +  correo + "', '" + password + "' );";
                     stm.execute(sql);

@@ -495,6 +495,11 @@ public class FrameAdminEafit extends javax.swing.JFrame {
             res.next();
             boolean esAdmin = false;
             
+            if(eliminado.equals("admineafit@eafit.edu.co")){
+                JOptionPane.showMessageDialog(null, "No puede eliminar los admins por defecto", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
             if(res.getString(1).equals("")){
                 JOptionPane.showMessageDialog(null, "No existe ese usuario", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -532,7 +537,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(FrameAdminVotacion.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "No se pudo eliminar el admin", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No se pudo eliminar el admin o el correo es inexistente", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 

@@ -283,7 +283,7 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
         });
     }
     
-    public TableModel buildTable() {
+    public static TableModel buildTable() {
         try {
             DefaultTableModel tabla = new DefaultTableModel();
             tabla.addColumn("Nombre");

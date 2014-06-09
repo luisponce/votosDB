@@ -34,6 +34,9 @@ public class Votacion {
     public Votacion(Object FechaInicio, Object FechaFin, String Nombre) {
         this.FechaInicio = FechaInicio;
         this.FechaFin = FechaFin;
+        //this.Nombre = Nombre;
+        //this.Votos = new ArrayList<>();
+        //this.candidatos = new Estudiante[];
         this.nombre = Nombre;
     }
     
@@ -84,5 +87,6 @@ public class Votacion {
         res.close();
         
         return id;
+
     }
 }

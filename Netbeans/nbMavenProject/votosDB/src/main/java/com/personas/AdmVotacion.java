@@ -1,10 +1,9 @@
-
-
 package com.personas;
 
 import com.votacion.Votacion;
 import com.votosdb.DBOps;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
@@ -72,8 +71,17 @@ public class AdmVotacion extends Admin{
              
     }
     
-    public void RegistrarCandidato(Estudiante candidato){
+    public void RegistrarCandidato(int codigo) throws Exception{
+        DBOps ops = DBOps.getInstance();
+        Connection con = ops.ConnectDB();
+        Statement stmt = con.createStatement();
+                
+        String sql = "SELECT ID FROM USUARIO WHERE CODIGO ='" + codigo +"'";
         
+        ResultSet res = stmt.executeQuery(sql);
+        res.next();
+        int id = Integer.parseInt(res.getString(1));
+        stmt.close();
         
         //Meterlo en la DB.
     }

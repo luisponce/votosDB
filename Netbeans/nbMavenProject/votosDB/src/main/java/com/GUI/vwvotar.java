@@ -6,6 +6,19 @@
 
 package com.GUI;
 
+import com.votacion.Votacion;
+import com.votosdb.DBOps;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.AbstractButton;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+
 /**
  *
  * @author jessecogollo
@@ -15,8 +28,36 @@ public class vwvotar extends javax.swing.JFrame {
     /**
      * Creates new form vwvotar
      */
-    public vwvotar() {
-        initComponents();
+    public vwvotar(String nombreVotacion, int idE) {
+        try {
+            int idV = Votacion.getIdByName(nombreVotacion);
+            initComponents();
+            
+            Connection c = DBOps.getInstance().ConnectDB();
+            Statement stm = c.createStatement();
+            
+            String sql = "SELECT NOMBRE FROM CANDIDATO, USUARIO "
+                    + "WHERE VOTACION = "+idV+" "
+                    + "AND ID = CANDIDATO";
+            
+            ResultSet res = stm.executeQuery(sql);
+            
+            while(res.next()){
+                String nombre;
+                nombre = res.getString(1);
+                JRadioButton radioButton = new JRadioButton(nombre);
+                pnlCandidatos.add(radioButton);
+                buttonGroup3.add(radioButton);
+            }
+            
+            
+            stm.close();
+            pack();
+        } catch (SQLException ex) {
+            Logger.getLogger(vwvotar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
     }
 
     /**
@@ -28,11 +69,11 @@ public class vwvotar extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
-        buttonGroup2 = new javax.swing.ButtonGroup();
+        buttonGroup3 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         BtnVotar = new javax.swing.JButton();
-        jRadioButton1 = new javax.swing.JRadioButton();
+        pnlCandidatos = new javax.swing.JPanel();
+        rbutBlanco = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -40,41 +81,58 @@ public class vwvotar extends javax.swing.JFrame {
         jLabel1.setText("Seleccionar opción");
 
         BtnVotar.setText("Votar");
+        BtnVotar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnVotarActionPerformed(evt);
+            }
+        });
 
-        jRadioButton1.setText("Blanco");
+        pnlCandidatos.setLayout(new javax.swing.BoxLayout(pnlCandidatos, javax.swing.BoxLayout.Y_AXIS));
+
+        buttonGroup3.add(rbutBlanco);
+        rbutBlanco.setText("Blanco");
+        pnlCandidatos.add(rbutBlanco);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(BtnVotar)
+                .addGap(232, 232, 232))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(79, 79, 79)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(jRadioButton1)))
+                        .addGap(29, 29, 29)
+                        .addComponent(pnlCandidatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(82, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(BtnVotar)
-                .addGap(232, 232, 232))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jRadioButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 178, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlCandidatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(BtnVotar)
                 .addGap(20, 20, 20))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void BtnVotarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVotarActionPerformed
+        if(buttonGroup3.getSelection() == null){
+            JOptionPane.showMessageDialog(null, "Seleccione un candidato");
+        } else {
+            
+        }
+    }//GEN-LAST:event_BtnVotarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -106,16 +164,16 @@ public class vwvotar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new vwvotar().setVisible(true);
+                new vwvotar("repres", 3).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnVotar;
-    private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.ButtonGroup buttonGroup3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JPanel pnlCandidatos;
+    private javax.swing.JRadioButton rbutBlanco;
     // End of variables declaration//GEN-END:variables
 }

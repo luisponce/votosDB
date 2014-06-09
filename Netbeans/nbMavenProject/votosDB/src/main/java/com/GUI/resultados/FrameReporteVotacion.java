@@ -42,7 +42,7 @@ public class FrameReporteVotacion extends JFrame{
             PanelTituloReporte titulo;
             titulo = new PanelTituloReporte(nombre, FechaI, FechaF);
             panel.add(titulo);
-            int idVotacion = Votacion.getIntByName(nombre);
+            int idVotacion = Votacion.getIdByName(nombre);
             
             //obtener los candidatos de la votacion
             Connection c = DBOps.getInstance().ConnectDB();

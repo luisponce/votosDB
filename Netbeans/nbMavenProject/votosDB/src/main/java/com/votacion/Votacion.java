@@ -68,10 +68,10 @@ public class Votacion {
      * @throws SQLException 
      */
     private int getId() throws SQLException {
-        return getIntByName(this.nombre);
+        return getIdByName(this.nombre);
     }
     
-    public static int getIntByName(String nombre) throws SQLException{
+    public static int getIdByName(String nombre) throws SQLException{
         Connection c = DBOps.getInstance().ConnectDB();
         Statement stm = c.createStatement();
         

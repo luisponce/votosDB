@@ -303,20 +303,20 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
 
     private void btnCandidatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCandidatosActionPerformed
         try {
-            int codigo = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el codigo del estudiante a ser candidato."));
+            String correo = JOptionPane.showInputDialog("Ingrese el correo del estudiante a ser candidato.");
             
             DBOps ops = DBOps.getInstance();
             Connection con = ops.ConnectDB();
             Statement stmt = con.createStatement();
             
-            String sql = "SELECT ID FROM USUARIO WHERE CODIGO ='" + codigo +"'";
+            String sql = "SELECT ID FROM USUARIO WHERE CORREO ='" + correo +"'";
             
             ResultSet res = stmt.executeQuery(sql);
             res.next();
             int id = Integer.parseInt(res.getString(1));
             TableModel modelo = tblVotaciones.getModel();
             int fila = tblVotaciones.getSelectedRow();
-            String nombre = modelo.getValueAt(fila, 1).toString();
+            String nombre = modelo.getValueAt(fila, 0).toString(); 
             
             sql = "select ID FROM VOTACION WHERE NOMBRE = '" + nombre + "';";
             ResultSet res2 = stmt.executeQuery(sql);

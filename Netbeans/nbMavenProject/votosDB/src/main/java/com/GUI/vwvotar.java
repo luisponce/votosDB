@@ -16,8 +16,11 @@ import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractButton;
+import javax.swing.AbstractListModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
+import javax.swing.ListModel;
 
 /**
  *
@@ -25,11 +28,18 @@ import javax.swing.JRadioButton;
  */
 public class vwvotar extends javax.swing.JFrame {
 
+    int idEstu;
+    int idVOtacion;
+    
     /**
      * Creates new form vwvotar
      */
     public vwvotar(String nombreVotacion, int idE) {
+        idEstu = idE;
+        
         try {
+            idVOtacion = Votacion.getIdByName(nombreVotacion);
+            
             int idV = Votacion.getIdByName(nombreVotacion);
             initComponents();
             
@@ -41,15 +51,17 @@ public class vwvotar extends javax.swing.JFrame {
                     + "AND ID = CANDIDATO";
             
             ResultSet res = stm.executeQuery(sql);
+            DefaultListModel list = new DefaultListModel();
+            
+            list.addElement("Blanco");
             
             while(res.next()){
                 String nombre;
                 nombre = res.getString(1);
-                JRadioButton radioButton = new JRadioButton(nombre);
-                pnlCandidatos.add(radioButton);
-                buttonGroup3.add(radioButton);
+                list.addElement(nombre);
+                
             }
-            
+            jList1.setModel(list);
             
             stm.close();
             pack();
@@ -72,8 +84,8 @@ public class vwvotar extends javax.swing.JFrame {
         buttonGroup3 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         BtnVotar = new javax.swing.JButton();
-        pnlCandidatos = new javax.swing.JPanel();
-        rbutBlanco = new javax.swing.JRadioButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,29 +99,29 @@ public class vwvotar extends javax.swing.JFrame {
             }
         });
 
-        pnlCandidatos.setLayout(new javax.swing.BoxLayout(pnlCandidatos, javax.swing.BoxLayout.Y_AXIS));
-
-        buttonGroup3.add(rbutBlanco);
-        rbutBlanco.setText("Blanco");
-        pnlCandidatos.add(rbutBlanco);
+        jList1.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(BtnVotar)
-                .addGap(232, 232, 232))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(79, 79, 79)
-                        .addComponent(jLabel1))
+                        .addGap(165, 165, 165)
+                        .addComponent(BtnVotar))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(pnlCandidatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(82, Short.MAX_VALUE))
+                        .addGap(102, 102, 102)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,20 +129,47 @@ public class vwvotar extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlCandidatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(BtnVotar)
-                .addGap(20, 20, 20))
+                .addGap(9, 9, 9))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnVotarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVotarActionPerformed
-        if(buttonGroup3.getSelection() == null){
+        if(jList1.getSelectedIndex() == -1){
             JOptionPane.showMessageDialog(null, "Seleccione un candidato");
         } else {
-            
+            try {
+                String nombre = (String) jList1.getSelectedValue();
+                System.out.println(nombre);
+                
+                int idC;
+                
+                Connection c = DBOps.getInstance().ConnectDB();
+                Statement stm = c.createStatement();
+                
+                String sql = "SELECT ID FROM USUARIO WHERE NOMBRE = '"+nombre+"'";
+                
+                ResultSet res = stm.executeQuery(sql);
+                
+                idC = res.getInt(1);
+                
+                stm.close();
+                
+                stm = c.createStatement();
+                
+                sql = "INSERT INTO VOTO (VOTANTE, VOTACION, SELECCION, PUESTO_VOT)"
+                        + " VALUES("+ idEstu+ ", "+idVOtacion+", "+idC+", 1)";
+                
+                stm.execute(sql);
+                
+                this.dispose();
+            } catch (SQLException ex) {
+                Logger.getLogger(vwvotar.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_BtnVotarActionPerformed
 
@@ -173,7 +212,7 @@ public class vwvotar extends javax.swing.JFrame {
     private javax.swing.JButton BtnVotar;
     private javax.swing.ButtonGroup buttonGroup3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel pnlCandidatos;
-    private javax.swing.JRadioButton rbutBlanco;
+    private javax.swing.JList jList1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

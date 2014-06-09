@@ -149,17 +149,17 @@ public class vwLogin extends javax.swing.JFrame {
                         break;
                     case "1"://abrir admin eafit
                         AdmEafit admE = new AdmEafit(1, ret[3], ret[4], ret[2]);
-                        JFrame fae = new FrameAdminEafit(admE);//saca un error
+                        JFrame fae = new FrameAdminEafit(admE);
                         fae.setVisible(true);
                         this.setVisible(false);
                         break;
                     default://abrir estudiante
-                        //falta frame del voto.
-                        JOptionPane.showMessageDialog(null, ret[1]
-                    , "estudiante ingresado", JOptionPane.ERROR_MESSAGE); 
+                        JFrame fv = new vwseleccionarvotacion();
+                        fv.setVisible(true);
+                        this.setVisible(false);
                         break;
                 }
-                
+                        //c.close();
             } catch (SQLException ex) {
                 Logger.getLogger(vwLogin.class.getName()).log(Level.SEVERE, null, ex);
             }

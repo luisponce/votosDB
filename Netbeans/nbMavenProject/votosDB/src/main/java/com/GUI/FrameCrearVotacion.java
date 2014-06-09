@@ -8,6 +8,11 @@ package com.GUI;
 
 import com.personas.AdmVotacion;
 import com.personas.Estudiante;
+import com.votosdb.DBOps;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -152,6 +157,39 @@ public class FrameCrearVotacion extends javax.swing.JFrame {
             
             
             String nombre = txtNombre.getText();
+            
+            Connection c = DBOps.getInstance().ConnectDB();
+            Statement stm = c.createStatement();
+            String sql = "Select NOMBRE from VOTACION";
+            ArrayList<String> arr = new ArrayList<>();
+            ResultSet res = stm.executeQuery(sql);
+            boolean vacio = false;
+            res.next();
+            try{
+                if(res.getString(1).equals("")){
+                    vacio = false;
+                }else{
+                    vacio = false;
+                }
+            }catch (Exception e){
+                vacio = true;
+            }
+            
+            res = stm.executeQuery(sql);
+            
+            if(!vacio){
+                while(res.next()){
+                    arr.add(res.getString(1));
+                }
+                for (String arr1 : arr) {
+                    if(arr1.equals(nombre)){
+                        JOptionPane.showMessageDialog(null, "El nombre de la votacion esta repetido", "Error", JOptionPane.ERROR_MESSAGE);
+                        txtNombre.setText("");
+                        return;
+                    }
+                }
+            }
+            
             if("".equals(nombre) || nombre == null){
                 JOptionPane.showMessageDialog(null, "El nombre no puede ser"
                         + " vacio", "Error", JOptionPane.ERROR_MESSAGE);
@@ -178,6 +216,7 @@ public class FrameCrearVotacion extends javax.swing.JFrame {
             padre.updateTablaVotaciones();
             setVisible(false);
             dispose();
+            stm.close();
         } catch (Exception ex) {
             Logger.getLogger(FrameCrearVotacion.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

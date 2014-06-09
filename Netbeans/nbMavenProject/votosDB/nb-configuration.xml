@@ -10,6 +10,7 @@ Without this configuration present, some functionality in the IDE may be limited
         <configurations>
             <configuration id="AdminEafit" profiles=""/>
             <configuration id="adminVotacion" profiles=""/>
+            <configuration id="resultados" profiles=""/>
         </configurations>
     </config-data>
 </project-shared-configuration>

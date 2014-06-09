@@ -26,45 +26,36 @@ public class personaLog {
         ret[1] = "x";
         //Consultar en la tabla de adminstradores primero
         String sql = "SELECT * FROM USUARIO WHERE CORREO='"+Usuario+"' AND PASSWORD='"+Clave+"'";
-        ResultSet res = stm.executeQuery(sql);
-        if(res.next()){
-            String id = res.getString(1);
+        ResultSet res = stm.executeQuery(sql);//tipo, correo, pass, nombre
+        if(res.next()){//1, ret[3], ret[4], ret[2]
+            String id = res.getString(1);//id usuario
+            String nombre = res.getString(2);//nombre usuario
+            String correo = res.getString(3);//email usuario
+            String pass = res.getString(4);//pass usuario
+            
+            ret[2] = nombre;
+            ret[3] = correo;
+            ret[4] = pass;
+            
             String sqladm = "SELECT * FROM ADMIN WHERE ID = '"+id+"'";
             ResultSet resadmin = stm.executeQuery(sqladm);
             if(resadmin.next()){
-                String idadmin = res.getString(1);
-                String tipoadmin = res.getString(2);
+                String idadmin = resadmin.getString(1);
+                String tipoadmin = resadmin.getString(2);
                 ret[0] = idadmin; 
                 ret[1] = tipoadmin;
-                //return ret;
-                //retornar el tipo de administrador para redireccionar a la pantalla a decuada.
+                
             }
             String sqlest = "SELECT * FROM ESTUDIANTE WHERE ID = '"+id+"'";
             ResultSet resest = stm.executeQuery(sqlest);
             if(resest.next()){
-                String idestudiante = res.getString(1);
-                String codigoestudiante = res.getString(2);
+                String idestudiante = resest.getString(1);
+                String codigoestudiante = resest.getString(2);
                 ret[0] = idestudiante; 
                 ret[1] = codigoestudiante;
-                //return ret;
-                //retornar el codigo del estudiante. para redireccionar a la pantalla sdel estudiante.
             }
-            //return ret;
-            //retornar un codigo qu avise que hay un error de validación.
         }
-        
-        /*if(res.getInt(1) == 0){//si es el primer elemento, dele como ID 0
-            sql = "INSERT INTO ESCUELA (ID, NOMBRE) "
-                    + "VALUES (0, '"+Nombre+"')";
-        } else {//si ya hay elementos, siga la numeracion de ID
-            sql = "INSERT INTO ESCUELA (NOMBRE) VALUES ('"+Nombre+"')";
-        }
-        stm.execute(sql);*/
-        
-        res.close();
         stm.close();
-        
         return ret;
-        //return ret;
     }
 }

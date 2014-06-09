@@ -154,7 +154,7 @@ public class vwLogin extends javax.swing.JFrame {
                         this.setVisible(false);
                         break;
                     default://abrir estudiante
-                        JFrame fv = new vwvotar();
+                        JFrame fv = new vwseleccionarvotacion();
                         fv.setVisible(true);
                         this.setVisible(false);
                         break;

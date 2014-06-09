@@ -9,6 +9,7 @@ package com.GUI;
 import com.personas.AdmVotacion;
 import com.universidad.Carrera;
 import com.universidad.UniversidadEafit;
+import com.votacion.Votacion;
 import com.votosdb.DBOps;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -76,6 +77,11 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
         jPanel3.add(btnCrearVotacion);
 
         btnCandidatos.setText("Añadir Candidatos");
+        btnCandidatos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCandidatosActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnCandidatos);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -244,6 +250,39 @@ public class FrameAdminVotacion extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "No se pudo eliminar el admin", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void btnCandidatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCandidatosActionPerformed
+        try {
+            int codigo = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el codigo del estudiante a ser candidato."));
+            
+            DBOps ops = DBOps.getInstance();
+            Connection con = ops.ConnectDB();
+            Statement stmt = con.createStatement();
+            
+            String sql = "SELECT ID FROM USUARIO WHERE CODIGO ='" + codigo +"'";
+            
+            ResultSet res = stmt.executeQuery(sql);
+            res.next();
+            int id = Integer.parseInt(res.getString(1));
+            TableModel modelo = tblVotaciones.getModel();
+            int fila = tblVotaciones.getSelectedRow();
+            String nombre = modelo.getValueAt(fila, 1).toString();
+            
+            sql = "select ID FROM VOTACION WHERE NOMBRE = '" + nombre + "';";
+            ResultSet res2 = stmt.executeQuery(sql);
+            res2.next();
+            int idvotacion = Integer.parseInt(res2.getString(1));
+            
+            sql = "insert into CANDIDATO (CANDIDATO, VOTACION) values (" + id + "," + idvotacion + ")";
+            stmt.execute(sql);
+            stmt.close();
+            updateTablaCandidatos();
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(FrameAdminVotacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnCandidatosActionPerformed
 
 
     /**

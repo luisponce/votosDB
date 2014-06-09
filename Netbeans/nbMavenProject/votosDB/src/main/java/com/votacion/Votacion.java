@@ -32,5 +32,6 @@ public class Votacion {
         this.FechaFin = FechaFin;
         this.Nombre = Nombre;
         this.Votos = new ArrayList<>();
+        //this.candidatos = new Estudiante[];
     }
 }

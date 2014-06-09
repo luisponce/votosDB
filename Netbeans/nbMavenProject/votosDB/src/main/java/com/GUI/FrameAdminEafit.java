@@ -14,6 +14,7 @@ import com.universidad.UniversidadEafit;
 import com.votosdb.DBOps;
 import java.awt.Graphics;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -486,29 +487,49 @@ public class FrameAdminEafit extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         try {
-            String eliminado =  JOptionPane.showInputDialog("Ingrese el correo del admin a eliminar.");
+            String eliminado =  JOptionPane.showInputDialog("Ingrese el correo del usuario a eliminar.");
             Connection c = DBOps.getInstance().ConnectDB();
             Statement stm = c.createStatement();
             String sql = "Select ID from USUARIO where CORREO =" + "'" +  eliminado + "'";
-            /*ResultSet res = stm.executeQuery(sql);
+            ResultSet res = stm.executeQuery(sql);
             res.next();
-            String sql2 = "Select TIPO from ADMIN where ID =" + "(Select ID from USUARIO where NOMBRE =" + "'" +  eliminado + "')";
-            ResultSet res2 = stm.executeQuery(sql2);
-            res2.next();
-            String sql3 = "Select * from ADMIN where ID = " + "(Select ID from USUARIO where NOMBRE =" + "'" +  eliminado + "')";
-            ResultSet res3 = stm.executeQuery(sql3);
-            res3.next();
-            if(res.getString("ID").equals("")){
-                JOptionPane.showMessageDialog(null, "No existe ese nombre", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }else if(res3.getString("ID").equals("")){
-                JOptionPane.showMessageDialog(null, "El usuario ingresado no es un admin.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }else if(!"1".equals(res2.getString("TIPO"))){
-                JOptionPane.showMessageDialog(null, "Solo puede eliminar admins de su tipo", "Error", JOptionPane.ERROR_MESSAGE);
+            boolean esAdmin = false;
+            
+            if(eliminado.equals("admineafit@eafit.edu.co")){
+                JOptionPane.showMessageDialog(null, "No puede eliminar los admins por defecto", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            */ //este pedazo no funciona... hay que validar porque sino trataria de eliminar un usuario que no es admin.
+            
+            if(res.getString(1).equals("")){
+                JOptionPane.showMessageDialog(null, "No existe ese usuario", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            try{
+                String sql3 = "Select * from ADMIN where ID = " + "(Select ID from USUARIO where CORREO =" + "'" +  eliminado + "')";
+                ResultSet res3 = stm.executeQuery(sql3);
+                res3.next();
+                if(!"1".equals(res3.getString(2))){
+                    boolean a = true;
+                }
+                esAdmin = true;
+            }catch (Exception e){
+               esAdmin = false; 
+            }
+            if(esAdmin){
+                String sqlAlterno = "Select * from ADMIN where ID = " + "(Select ID from USUARIO where CORREO =" + "'" +  eliminado + "')";
+                ResultSet alterno = stm.executeQuery(sqlAlterno);
+                alterno.next();
+                if(!"1".equals(alterno.getString(2))){
+                    JOptionPane.showMessageDialog(null, "Solo puede eliminar admins de su tipo.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "Para eliminar un usuario hagalo dese \n la ventana Estudiantes", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            
             sql = "Delete from ADMIN where ID = (Select ID from"
                     + " USUARIO where CORREO=" + "'" + eliminado + "'" + ");" +
                     "Delete from USUARIO where CORREO =" + "'" +  eliminado + "'";
@@ -516,7 +537,7 @@ public class FrameAdminEafit extends javax.swing.JFrame {
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(FrameAdminVotacion.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "No se pudo eliminar el admin", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No se pudo eliminar el admin o el correo es inexistente", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
@@ -540,7 +561,38 @@ public class FrameAdminEafit extends javax.swing.JFrame {
                 
                     Connection c = DBOps.getInstance().ConnectDB();
                     Statement stm = c.createStatement();
-                    String sql = "Insert into USUARIO (NOMBRE, CORREO, PASSWORD) "
+                    
+                    String sql = "Select CORREO from USUARIO";
+                    ResultSet res = stm.executeQuery(sql);
+                    ArrayList<String> arr = new ArrayList<>();
+                    boolean vacio = false;
+                    res.next();
+                    try{
+                        if(res.getString(1).equals("")){
+                            vacio = false;
+                        }else{
+                            vacio = false;
+                        }
+                    }catch (Exception e){
+                        vacio = true;
+                    }
+            
+            res = stm.executeQuery(sql);
+            
+            if(!vacio){
+                while(res.next()){
+                    arr.add(res.getString(1));
+                }
+                for (String arr1 : arr) {
+                    if(arr1.equals(correo)){
+                        JOptionPane.showMessageDialog(null, "El correo ya esta en uso", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+            }
+                    
+                    
+                    sql = "Insert into USUARIO (NOMBRE, CORREO, PASSWORD) "
                         + "values ('" + nombre + "', '" 
                         +  correo + "', '" + password + "' );";
                     stm.execute(sql);
